@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>PaaS Monitoring</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="resources/css/layout.css" />
+		<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="resources/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="resources/js/common.js"></script>
+	</head>
+	<body>
+
+		<!-- Wrap -->
+		<div id="wrap">
+			
+			<!-- Header -->
+			<header>
+				<h1><a href="index.html"><img src="resources/img/h1_logo.png" alt="PaaS Monitoring" ></a></h1>
+				<nav>
+					<ul>
+						<li><a href="#" class="alarmView"><span>0</span><img src="resources/img/btn__header_alarm.png" alt="alarm" ></a></li>
+						<li><a href="#" class="timeSetting"><img src="resources/img/btn__header_cal.png" alt="calendar" ></a></li>
+						<li><a href="javascript:location.reload();"><img src="resources/img/btn__header_reload.png" alt="reload" ></a></li>
+						<li class="outBtn">
+							<a href="#"><img src="resources/img/btn__header_user.png" alt="user" ></a>
+							<span class="logout"><a href="#">Logout</a></span>
+						</li>
+					</ul>
+				<nav>
+				<div class="timePop">
+					<h4>Time Range</h4>
+					<div class="timer">
+						<div>
+							<input type="radio" name="timeRange" id="tr01" value="15">
+							<label for="tr01">최근 15분</label>
+							<input type="radio" name="timeRange" id="tr02" value="30">
+							<label for="tr02">최근 30분</label>
+							<input type="radio" name="timeRange" id="tr03" value="60">
+							<label for="tr03">최근 1시간</label>
+							<input type="radio" name="timeRange" id="tr04" value="180">
+							<label for="tr04">최근 3시간</label>
+							<input type="radio" name="timeRange" id="tr05" value="360">
+							<label for="tr05">최근 6시간</label>
+							<input type="radio" name="timeRange" id="tr06" value="720">
+							<label for="tr06">최근 12시간</label>
+							<input type="radio" name="timeRange" id="tr07" value="1440">
+							<label for="tr07">최근 1일</label>
+							<input type="radio" name="timeRange" id="tr08" value="10080">
+							<label for="tr08">최근 이번주</label>
+							<input type="radio" name="timeRange" id="tr09" value="40320">
+							<label for="tr09">최근 이번달</label>
+						</div>
+						<div style="display:none;">
+							<input type="radio" name="timeRange" id="tr10">
+							<label for="tr10">수동설정</label>
+							<input type="text" id="from" name="from">
+							<input type="text" id="to" name="to">
+						</div>
+					</div>
+					<h4>Refreshing Time</h4>
+					<div class="refresh">
+						<div class="select_wrap">
+							<select id="timeSelect">
+								<option value="0">OFF</option>
+								<option value="1">1m</option>
+								<option value="5">5m</option>
+								<option value="15">15m</option>
+								<option value="30">30m</option>
+								<option value="60">1h</option>
+								<option value="120">2h</option>
+								<option value="1440">1d</option>
+							</select>
+							<label for="timeSelect">OFF</label>
+						</div>
+					</div>
+					<div class="btnWrap center">
+						<button class="close">Close</button>
+						<button class="save">Save Changes</button>
+					</div>
+					<a href="#" class="close">close</a>
+				</div>
+			</header>
+			<!-- // Header -->
+
+			<!-- Container -->
+			<div id="container">
+				
+				<!-- Navigation -->
+				<nav>
+					<ul>
+						<li class="on"><a href="bosh.html">Bosh</a></li>
+						<li><a href="paas.html">PaaS-TA</a></li>
+						<li><a href="cont.html">Container</a></li>
+						<li>
+							<a href="alarm_policy.html"><span>Alarm</span></a>
+							<ul>
+								<li><a href="alarm_policy.html">Policy</a></li>
+								<li><a href="alarm_status.html">Status</a></li>
+								<li><a href="alarm_statis.html">Statistics</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<!-- // Navigation -->
+
+				<!-- Contents -->
+				<section id="contents">
+
+					<!-- Overview -->
+					<div class="overview boshView">
+						<div class="running">
+							<span>Bosh</span>
+							<strong>-</strong>
+						</div>
+						<ul data-link="bosh.html">
+							<li class="warning">
+								<a href="#">
+									<span>Warning</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="critical">
+								<a href="#">
+									<span>Critical</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="failed">
+								<a href="#">
+									<span>Failed</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="total">
+								<span>Total</span>
+								<strong>-</strong>
+							</li>
+						</ul>
+					</div>
+					<!-- // Overview -->
+					
+					<!-- Overview -->
+					<div class="overview paasView">
+						<div class="running">
+							<span>PaaS-TA</span>
+							<strong>-</strong>
+						</div>
+						<ul data-link="paas.html">
+							<li class="warning">
+								<a href="#">
+									<span>Warning</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="critical">
+								<a href="#">
+									<span>Critical</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="failed">
+								<a href="#">
+									<span>Failed</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="total">
+								<span>Total</span>
+								<strong>-</strong>
+							</li>
+						</ul>
+					</div>
+					<!-- // Overview -->
+					
+					<!-- Overview -->
+					<div class="overview contView">
+						<div class="running">
+							<span>Container</span>
+							<strong>-</strong>
+						</div>
+						<ul data-link="cont.html">
+							<li class="warning">
+								<a href="#">
+									<span>Warning</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="critical">
+								<a href="#">
+									<span>Critical</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="failed">
+								<a href="#">
+									<span>Failed</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="total">
+								<span>Total</span>
+								<strong>-</strong>
+							</li>
+						</ul>
+					</div>
+					<!-- // Overview -->
+
+					<article class="zoneWrap">
+						<h4>
+							<span>Zone-Containers View</span>
+							<div class="select_wrap zoneSelect">
+								<select>
+									<option>선택</option>
+								</select>
+								<label>선택</label>
+							</div>
+							<ul>
+								<li class="run">Running</li>
+								<li class="war">Warning</li>
+								<li class="cri">Critical</li>
+								<li class="fai">Fail</li>
+							</ul>
+						</h4>
+						<div class="cellList">
+
+						</div>
+					</article>
+
+					<article class="alarmWrap">
+						<h4>Alarm Issue View</h4>
+						<ul class="alarmList">
+						</ul>
+					</article>
+					
+				</section>
+				<!-- // Contents -->
+
+			</div>
+			<!-- // Container -->
+
+		</div>
+		<!-- // Wrap -->
+
+		<script type="text/javascript">
+			$(function(){
+
+				var boshID = '';
+				var boshSummaryURL = pass.url + 'paas/bosh/overview';
+				var paasSummaryURL = pass.url + 'paas/paasta/overview';
+				var contSummaryURL = pass.url + 'paas/container/overview';
+
+				var containerSummaryURL = pass.url + 'paas/container/summary?pageIndex=1&pageItems=1000';
+				var containerTopProcessURL = pass.url + 'paas/container/relationship';
+				var containerID = '';
+				var containerSummaryName = '';
+				
+				var alarmURL = pass.url + 'paas/alarm/realtime/list';
+
+				// bosh Summary Data Load
+				var boshSummaryData = pass.ajaxLoad(boshSummaryURL);
+				var paasSummaryData = pass.ajaxLoad(paasSummaryURL);
+				var contSummaryData = pass.ajaxLoad(contSummaryURL);
+				
+				var alarmData = pass.ajaxLoad(alarmURL);
+
+                /************************ Data Example *************************
+                critical: "0"
+                failed: "0"
+                running: "1"
+                total: "1"
+                warning: "0"
+                ***************************************************************/
+
+				$('.boshView').find('.running').find('strong').text(boshSummaryData.running);
+				if(boshSummaryData.warning > 0){
+					$('.boshView').find('.warning').find('strong').text(boshSummaryData.warning);
+				} else {
+					$('.boshView').find('.warning').hide();
+				}
+				if(boshSummaryData.critical > 0){
+					$('.boshView').find('.critical').find('strong').text(boshSummaryData.critical);
+				} else {
+					$('.boshView').find('.critical').hide();
+				}
+				if(boshSummaryData.failed > 0){
+					$('.boshView').find('.failed').find('strong').text(boshSummaryData.failed);
+				} else {
+					$('.boshView').find('.failed').hide();
+				}
+				if(boshSummaryData.total > 0){
+					$('.boshView').find('.total').find('strong').text(boshSummaryData.total);
+				} else {
+					$('.boshView').find('.total').hide();
+				};
+				
+				$('.paasView').find('.running').find('strong').text(paasSummaryData.running);
+				if(paasSummaryData.warning > 0){
+					$('.paasView').find('.warning').find('strong').text(paasSummaryData.warning);
+				} else {
+					$('.paasView').find('.warning').hide();
+				}
+				if(paasSummaryData.critical > 0){
+					$('.paasView').find('.critical').find('strong').text(paasSummaryData.critical);
+				} else {
+					$('.paasView').find('.critical').hide();
+				}
+				if(paasSummaryData.failed > 0){
+					$('.paasView').find('.failed').find('strong').text(paasSummaryData.failed);
+				} else {
+					$('.paasView').find('.failed').hide();
+				}
+				if(paasSummaryData.total > 0){
+					$('.paasView').find('.total').find('strong').text(paasSummaryData.total);
+				} else {
+					$('.paasView').find('.total').hide();
+				};
+				
+				$('.contView').find('.running').find('strong').text(contSummaryData.running);
+				if(contSummaryData.warning > 0){
+					$('.contView').find('.warning').find('strong').text(contSummaryData.warning);
+				} else {
+					$('.contView').find('.warning').hide();
+				}
+				if(contSummaryData.critical > 0){
+					$('.contView').find('.critical').find('strong').text(contSummaryData.critical);
+				} else {
+					$('.contView').find('.critical').hide();
+				}
+				if(contSummaryData.failed > 0){
+					$('.contView').find('.failed').find('strong').text(contSummaryData.failed);
+				} else {
+					$('.contView').find('.failed').hide();
+				}
+				if(contSummaryData.total > 0){
+					$('.contView').find('.total').find('strong').text(contSummaryData.total);
+				} else {
+					$('.contView').find('.total').hide();
+				};
+
+				
+				summaryDraw();
+
+				function summaryDraw(){
+					// container Summary Data Load
+					containerSummaryData = pass.ajaxLoad(containerSummaryURL);
+
+					$('.zoneSelect select').empty();
+
+					$.each(containerSummaryData.data, function(n){ // container Summary List Add
+						/************************ Data Example *************************
+						appCnt: "1"
+						cellCnt: "1"
+						cellName: ""
+						containerCnt: "2"
+						criticalCnt: "0"
+						failedCnt: "0"
+						runningCnt: "2"
+						warningCnt: "0"
+						zoneName: "z1"
+						***************************************************************/
+						var html = '<option value="'+this.zoneName+'">Cell-'+this.zoneName+' / '+this.cellCnt+'</option>';
+
+						$('.zoneSelect select').append(html).find('option').last().data({
+							'zoneName':this.zoneName,
+							'cellCnt':this.cellCnt,
+							'containerCnt':this.containerCnt,
+							'appCnt':this.appCnt,
+							'criticalCnt':this.criticalCnt,
+							'warningCnt':this.warningCnt,
+							'runningCnt':this.runningCnt
+						});
+
+						if(n == 0){
+							containerID = this.zoneName;
+
+							$('.zoneSelect label').text($('.zoneSelect select option:checked').text());
+						};
+					});
+					
+					containerSelectFunction($('.zoneSelect select option:checked').data('zoneName'));
+				};
+
+				function containerSelectFunction(name){
+					var containerTopData = pass.ajaxLoad(containerTopProcessURL);
+				
+					$('.cellList').empty();
+
+					console.log(containerTopData);
+
+					$.each(containerTopData, function(n){ // container Top List Add
+						if(this.zoneName == name){
+							/************************ Data Example *************************
+							appCnt: "1"
+							cellCnt: ""
+							cellIp: "10.20.10.136"
+							cellName: "diego-cell/0"
+							containerCnt: "2"
+							containers: (2) [{
+								0: {appName: "hello", appIndex: "1", status: "running", containerId: "wqsq7f3rfsfp-0"}
+								1: {appName: "hello", appIndex: "3", status: "running", containerId: "wqsq7f3rfsfo-0"}
+							}]
+							criticalCnt: "0"
+							failedCnt: "0"
+							runningCnt: "2"
+							warningCnt: "0"
+							zoneName: "z1"
+							***************************************************************/
+							var html = '<dl>';
+							html += '	<dt>'+this.cellName+'</dt>';
+							html += '<dd>';
+							
+							if(this.containers != null && this.containers.length > 0){
+								$.each(this.containers, function(x){
+									html +=		'<span class="contChart '+this.status+'" data-id="'+this.containerId+'">'+this.appIndex;
+									html +=			'<div class="flag">';
+									html +=				'<strong>App Name</strong><em class="name">'+this.appName+'</em>';
+									html +=				'<strong>Status</strong><em class="'+this.status+'">'+this.status+'</em>';
+									html +=			'</div>';
+									html +=		'</span>';
+								});
+							};
+
+							html += '</dd></dl>';
+							
+							$('.cellList').append(html);
+						};
+					});
+
+					$('.contChart').off().on('click', function(){
+						$.cookie('result', $(this).attr('data-id'));
+						$.cookie('name', $(this).find('.name').text());
+
+						location.href = 'cont_chart.html';
+					});
+
+				};
+
+
+				var alarmWrap = $('.alarmList');
+
+				alarmWrap.empty();
+
+				$.each(alarmData.data, function(){
+					var html = '<li>';
+					html += '	<h6 class="'+this.level+'"><span>'+this.level+'</span></h6>';
+					html += '	<p>'+this.regDate+'</p>';
+					html += '	<dl>';
+					html += '		<dt>Type</dt>';
+					html += '		<dd>'+this.alarmType+'</dd>';
+					html += '	</dl>';
+					html += '	<dl>';
+					html += '		<dt>Title</dt>';
+					html += '		<dd>'+this.alarmTitle+'</dd>';
+					html += '	</dl>';
+					html += '</li>';
+
+					alarmWrap.append(html);
+				});
+				
+				$('.overview ul li a').off().on('click', function(){
+					var thisLink = $(this).parents('ul').attr('data-link');
+
+					location.href = thisLink;
+				});
+
+				$('.alarmList li').off().on('click', function(){
+					location.href = 'alarm_status.html';
+				});
+
+				$('.zoneSelect select').change(function(){
+					console.log($(this).find('option:checked').data('zoneName'));
+					containerSelectFunction($(this).find('option:checked').data('zoneName'));
+				});
+			})
+		</script>
+
+	</body>
+</html>
