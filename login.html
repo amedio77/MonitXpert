@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>PaaS Monitoring</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="resources/css/layout.css" />
+		<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="resources/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="resources/js/common.js"></script>
+	</head>
+	<body class="login">
+
+		<!-- Wrap -->
+		<div class="loginWrap">
+            <div>
+                <h1><img src="resources/img/login_logo.png" alt="PaaS Monitoring"></h1>
+                <fieldset>
+                    <div>
+                        <label class="id"><input type="text" placeholder="ID"></label>
+                    </div>
+                    <div>
+                        <label class="pw"><input type="password" placeholder="Password"></label>
+                    </div>
+                    <div class="btn">
+                        <button class="join">회원가입</button>
+                        <button class="loginBtn">로그인</button>
+                    </div>
+                </fieldset>
+            </div>
+		</div>
+		<!-- // Wrap -->
+
+		<script type="text/javascript">
+			$(function(){
+                
+                var logIn = pass.url+'login';
+                var logToken;
+
+                if(sessionStorage.getItem('login') == 'error'){
+                    sessionStorage.setItem('login', '');
+                };
+
+                $('input[type=text]').trigger('focus');
+
+                $('.join').off().on('click', function(){
+                    location.href = 'join.html';
+                });
+
+                $('.loginBtn').off().on('click', function(){
+                    if($('input[type=text]').val() != '' && $('input[type=password]').val() != ''){
+                        $.ajax({
+                            url:logIn,
+                            method:'POST',
+                            data:'{"username":"'+$('input[type=text]').val()+'","password":"'+$('input[type=password]').val()+'"}',
+                            beforeSend : function(xhr){
+                                logToken = pass.tokenCompare();
+                                sessionStorage.setItem('token', logToken);
+                                xhr.setRequestHeader('X-XSRF-TOKEN', logToken);
+                            },
+                            success:function(){
+                                console.log('SUCESS');
+                                sessionStorage.setItem('token', logToken);
+                                sessionStorage.setItem('login', '');
+                                location.href = 'index.html';
+                            },
+                            error:function(){
+                                console.log('ERROR');
+                                alert('ID 또는 Password를 확인해 주세요.');
+                            }
+                        });
+                    } else {
+                        if($('input[type=text]').val() == ''){
+                            alert('ID를 입력해주세요.');
+                        } else {
+                            alert('Password를 입력해주세요.');
+                        }
+                    };
+                });
+
+                $('input[type=text], input[type=password]').off().on('keydown', function(key){
+                    if(key.keyCode == 13){
+                        $('.loginBtn').trigger('click');
+                    };
+                });
+
+			});
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>PaaS Monitoring</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="resources/css/layout.css" />
+		<link rel="stylesheet" type="text/css" media="print" href="resources/css/print.css" />
+		<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="resources/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="resources/js/common.js"></script>
+	</head>
+	<body>
+
+		<!-- Wrap -->
+		<div id="wrap">
+			
+			<!-- Header -->
+			<header>
+				<h1><a href="index.html"><img src="resources/img/h1_logo.png" alt="PaaS Monitoring" ></a></h1>
+				<nav>
+					<ul>
+						<li><a href="#" class="alarmView"><span>0</span><img src="resources/img/btn__header_alarm.png" alt="alarm" ></a></li>
+						<li><a href="#" class="timeSetting"><img src="resources/img/btn__header_cal.png" alt="calendar" ></a></li>
+						<li><a href="javascript:location.reload();"><img src="resources/img/btn__header_reload.png" alt="reload" ></a></li>
+						<li class="outBtn">
+							<a href="#"><img src="resources/img/btn__header_user.png" alt="user" ></a>
+							<span class="logout"><a href="#">Logout</a></span>
+						</li>
+					</ul>
+				<nav>
+				<div class="timePop">
+					<h4>Time Range</h4>
+					<div class="timer">
+						<div>
+							<input type="radio" name="timeRange" id="tr01" value="15">
+							<label for="tr01">최근 15분</label>
+							<input type="radio" name="timeRange" id="tr02" value="30">
+							<label for="tr02">최근 30분</label>
+							<input type="radio" name="timeRange" id="tr03" value="60">
+							<label for="tr03">최근 1시간</label>
+							<input type="radio" name="timeRange" id="tr04" value="180">
+							<label for="tr04">최근 3시간</label>
+							<input type="radio" name="timeRange" id="tr05" value="360">
+							<label for="tr05">최근 6시간</label>
+							<input type="radio" name="timeRange" id="tr06" value="720">
+							<label for="tr06">최근 12시간</label>
+							<input type="radio" name="timeRange" id="tr07" value="1440">
+							<label for="tr07">최근 1일</label>
+							<input type="radio" name="timeRange" id="tr08" value="10080">
+							<label for="tr08">최근 이번주</label>
+							<input type="radio" name="timeRange" id="tr09" value="40320">
+							<label for="tr09">최근 이번달</label>
+						</div>
+						<div style="display:none;">
+							<input type="radio" name="timeRange" id="tr10">
+							<label for="tr10">수동설정</label>
+							<input type="text" id="from" name="from">
+							<input type="text" id="to" name="to">
+						</div>
+					</div>
+					<h4>Refreshing Time</h4>
+					<div class="refresh">
+						<div class="select_wrap">
+							<select id="timeSelect">
+								<option value="0">OFF</option>
+								<option value="1">1m</option>
+								<option value="5">5m</option>
+								<option value="15">15m</option>
+								<option value="30">30m</option>
+								<option value="60">1h</option>
+								<option value="120">2h</option>
+								<option value="1440">1d</option>
+							</select>
+							<label for="timeSelect">OFF</label>
+						</div>
+					</div>
+					<div class="btnWrap center">
+						<button class="close">Close</button>
+						<button class="save">Save Changes</button>
+					</div>
+					<a href="#" class="close">close</a>
+				</div>
+			</header>
+			<!-- // Header -->
+
+			<!-- Container -->
+			<div id="container">
+				
+				<!-- Navigation -->
+				<nav>
+					<ul>
+						<li><a href="bosh.html">Bosh</a></li>
+						<li><a href="paas.html">PaaS-TA</a></li>
+						<li><a href="cont.html">Container</a></li>
+						<li class="on">
+							<a href="alarm_policy.html"><span>Alarm</span></a>
+							<ul>
+								<li><a href="alarm_policy.html">Policy</a></li>
+								<li><a href="alarm_status.html">Status</a></li>
+								<li class="on"><a href="alarm_statis.html">Statistics</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<!-- // Navigation -->
+
+				<!-- Contents -->
+				<section id="contents">
+					
+					<!-- Location -->
+					<div class="location">
+						<ul>
+							<li><a href="#">PaaS Monitoring</a></li>
+							<li><a href="#">Alarm</a></li>
+							<li><a href="#">Statistics</a></li>
+						</ul>
+					</div>
+					<!-- // Location -->
+
+                    <article class="boshChart">
+						<div class="listSearch left">
+							<button class="date on" data-term="d">일</button>
+							<button class="date" data-term="w">주</button>
+							<button class="date" data-term="m">월</button>
+							<button class="date" data-term="y">년</button>
+							<button class="ar left"></button>
+							<button class="ar right"></button>
+							<input type="text" class="day" value="">
+						</div>
+						<div class="listBtns">
+							<a href="javascript:contentPrint();" class="print">출력</a>
+							<a href="javascript:void(0);" class="excel">엑셀 다운로드</a>
+						</div>
+                        <ul class="list static" id="print">
+                            <li>
+								<h5>Total</h5>
+								<div class="total">
+									<dl class="total">
+										<dt>Total</dt>
+										<dd>0</dd>
+									</dl>
+									<dl class="warning">
+										<dt>Warning</dt>
+										<dd>0</dd>
+									</dl>
+									<dl class="critical">
+										<dt>Critical</dt>
+										<dd>0</dd>
+									</dl>
+								</div>
+								<div id="chart1" class="chartWrap"></div>
+							</li>
+                            <li>
+								<h5>Service</h5>
+								<div class="service double">
+									<dl class="bosh">
+										<dt>Bosh</dt>
+										<dd class="warning">
+											<span>Warning</span>
+											<strong>0</strong>
+										</dd>
+										<dd class="critical">
+											<span>Critical</span>
+											<strong>0</strong>
+										</dd>
+									</dl>
+									<dl class="paas">
+										<dt>PaaS-TA</dt>
+										<dd class="warning">
+											<span>Warning</span>
+											<strong>0</strong>
+										</dd>
+										<dd class="critical">
+											<span>Critical</span>
+											<strong>0</strong>
+										</dd>
+									</dl>
+									<dl class="cont">
+										<dt>Container</dt>
+										<dd class="warning">
+											<span>Warning</span>
+											<strong>0</strong>
+										</dd>
+										<dd class="critical">
+											<span>Critical</span>
+											<strong>0</strong>
+										</dd>
+									</dl>
+								</div>
+								<div id="chart2" class="chartWrap"></div>
+							</li>
+                            <li>
+								<h5>Matrix</h5>
+								<div class="matrix double">
+									<dl class="cpu">
+										<dt>CPU</dt>
+										<dd class="warning">
+											<span>Warning</span>
+											<strong>0</strong>
+										</dd>
+										<dd class="critical">
+											<span>Critical</span>
+											<strong>0</strong>
+										</dd>
+									</dl>
+									<dl class="mory">
+										<dt>Memory</dt>
+										<dd class="warning">
+											<span>Warning</span>
+											<strong>0</strong>
+										</dd>
+										<dd class="critical">
+											<span>Critical</span>
+											<strong>0</strong>
+										</dd>
+									</dl>
+									<dl class="disk">
+										<dt>Disk</dt>
+										<dd class="warning">
+											<span>Warning</span>
+											<strong>0</strong>
+										</dd>
+										<dd class="critical">
+											<span>Critical</span>
+											<strong>0</strong>
+										</dd>
+									</dl>
+								</div>
+								<div id="chart3" class="chartWrap"></div>
+							</li>
+                        </ul>
+                    </article>
+				</section>
+				<!-- // Contents -->
+
+			</div>
+			<!-- // Container -->
+
+		</div>
+		<!-- // Wrap -->
+
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var days = 'd';
+				var step = 1;
+				
+
+				var dataTitle = '';
+				var dataTitle2 = '';
+
+				staticDraw();
+
+				function staticDraw(){
+					var today = new Date();
+					var today2 = new Date();
+
+					var staticData = pass.url + 'paas/alarm/statistics?period='+days+'&interval='+step;
+
+					var alarmStaticData = pass.ajaxLoad(staticData);
+					console.log(alarmStaticData);
+
+					pass.countUp($('.total .total dd'), 0, alarmStaticData.totalCnt);
+					pass.countUp($('.total .warning dd'), 0, alarmStaticData.warningCnt);
+					pass.countUp($('.total .critical dd'), 0, alarmStaticData.criticalCnt);
+					
+					pass.countUp($('.bosh .warning strong'), 0, alarmStaticData.boshWarningCnt);
+					pass.countUp($('.bosh .critical strong'), 0, alarmStaticData.boshCriticalCnt);
+					pass.countUp($('.paas .warning strong'), 0, alarmStaticData.paastaWarningCnt);
+					pass.countUp($('.paas .critical strong'), 0, alarmStaticData.paastaCriticalCnt);
+					pass.countUp($('.cont .warning strong'), 0, alarmStaticData.containerWarningCnt);
+					pass.countUp($('.cont .critical strong'), 0, alarmStaticData.containerCriticalCnt);
+
+					pass.countUp($('.cpu .warning strong'), 0, alarmStaticData.cpuWarningCnt);
+					pass.countUp($('.cpu .critical strong'), 0, alarmStaticData.cpuCriticalCnt);
+					pass.countUp($('.mory .warning strong'), 0, alarmStaticData.memoryWarningCnt);
+					pass.countUp($('.mory .critical strong'), 0, alarmStaticData.memoryCriticalCnt);
+					pass.countUp($('.disk .warning strong'), 0, alarmStaticData.diskWarningCnt);
+					pass.countUp($('.disk .critical strong'), 0, alarmStaticData.diskCriticalCnt);
+
+					var staticURL = [];
+					staticURL[0] = pass.url + 'paas/alarm/statistics/graph/total?period='+days+'&interval='+step // 알람통계 total
+					staticURL[1] = pass.url + 'paas/alarm/statistics/graph/service?period='+days+'&interval='+step // 알람통계 service
+					staticURL[2] = pass.url + 'paas/alarm/statistics/graph/matrix?period='+days+'&interval='+step // 알람통계 matrix
+
+					switch(days){
+						case 'd':
+							dataTitle = '00:00';
+							dataTitle2 = '23:00';
+
+							today.setDate(today.getDate()-(step-1));
+
+							$('.day').val(today.getFullYear() +'. '+ ('0' + (today.getMonth()+1)).slice(-2) +'. '+ ('0' + today.getDate()).slice(-2));
+						break;
+						case 'w':
+							today2.setDate(today2.getDate()-(7*(step-1)));
+
+							dataTitle2 = today2.getFullYear() +'. '+ ('0' + (today2.getMonth()+1)).slice(-2) +'. '+ ('0' + today2.getDate()).slice(-2);
+
+							today.setDate(today.getDate()-(7*step));
+
+							dataTitle = today.getFullYear() +'. '+ ('0' + (today.getMonth()+1)).slice(-2) +'. '+ ('0' + today.getDate()).slice(-2);
+							
+							$('.day').val(dataTitle +' ~ '+ dataTitle2);
+						break;
+						case 'm':
+							today2.setMonth(today2.getMonth()-(step-1));
+
+							dataTitle2 = today2.getFullYear() +'. '+ ('0' + (today2.getMonth()+1)).slice(-2) +'. '+ ('0' + today2.getDate()).slice(-2);
+
+							today.setMonth(today.getMonth()-step);
+
+							dataTitle = today.getFullYear() +'. '+ ('0' + (today.getMonth()+1)).slice(-2) +'. '+ ('0' + today.getDate()).slice(-2);
+							
+							$('.day').val(dataTitle +' ~ '+ dataTitle2);
+						break;
+						case 'y':
+							today2.setFullYear(today2.getFullYear()-(step-1));
+
+							dataTitle2 = today2.getFullYear() +'. '+ ('0' + (today2.getMonth()+1)).slice(-2) +'. '+ ('0' + today2.getDate()).slice(-2);
+
+							today.setFullYear(today.getFullYear()-step);
+
+							dataTitle = today.getFullYear() +'. '+ ('0' + (today.getMonth()+1)).slice(-2) +'. '+ ('0' + today.getDate()).slice(-2);
+							
+							$('.day').val(dataTitle +' ~ '+ dataTitle2);
+						break;
+					};
+					
+					google.charts.load('current', {'packages':['corechart']});
+
+					$.each(staticURL, function(n){
+						google.charts.setOnLoadCallback(drawChart);
+
+						function drawChart() {
+							var jsonData = $.ajax({
+								url: staticURL[n],
+								dataType: 'json',
+								async: false
+							});
+
+							console.log(jsonData.responseJSON);
+
+							var dataBuild = [];
+
+							if(n == 0){
+								$.each(jsonData.responseJSON[0].stat, function(x){
+									var time = this.time.toFixed(0);
+									var critical = this.count.toFixed(2);
+									var warning = jsonData.responseJSON[1].stat[x].count.toFixed(2);
+
+									dataBuild.push([pass.unixTime(Number(time)),Number(critical),Number(warning)]);
+								});
+							} else {
+								$.each(jsonData.responseJSON[0].stat, function(x){
+									var time = this.time.toFixed(0);
+									var critical1 = this.count.toFixed(2);
+									var warning1 = jsonData.responseJSON[1].stat[x].count.toFixed(2);
+									var critical2 = jsonData.responseJSON[2].stat[x].count.toFixed(2);
+									var warning2 = jsonData.responseJSON[3].stat[x].count.toFixed(2);
+									var critical3 = jsonData.responseJSON[4].stat[x].count.toFixed(2);
+									var warning3 = jsonData.responseJSON[5].stat[x].count.toFixed(2);
+
+									dataBuild.push([pass.unixTime(Number(time)),Number(critical1),Number(warning1),Number(critical2),Number(warning2),Number(critical3),Number(warning3)]);
+								});
+							};
+
+							if(n == 0){
+								var data = new google.visualization.DataTable();
+								data.addColumn('string', 'time');
+								data.addColumn('number', 'critical');
+								data.addColumn('number', 'warning');
+								data.addRows(dataBuild);
+							} else {
+								var data = new google.visualization.DataTable();
+								data.addColumn('string', 'time');
+								data.addColumn('number', 'critical1');
+								data.addColumn('number', 'warning1');
+								data.addColumn('number', 'critical2');
+								data.addColumn('number', 'warning2');
+								data.addColumn('number', 'critical3');
+								data.addColumn('number', 'warning3');
+								data.addRows(dataBuild);
+							};
+
+							var options = {
+								legend : 'none',
+								series: {
+									0: {
+										color: pass.chartColor[5],
+										lineWidth: 1,
+									},
+									1: {
+										color: pass.chartColor[2],
+										lineWidth: 1,
+									},
+									2: {
+										color: pass.chartColor[3],
+										lineWidth: 1,
+									},
+									3: {
+										color: pass.chartColor[0],
+										lineWidth: 1,
+									},
+									4: {
+										color: pass.chartColor[5],
+										lineWidth: 1,
+									},
+									5: {
+										color: pass.chartColor[2],
+										lineWidth: 1,
+									},
+								},
+								chartArea : {
+									left:'5%',
+									top:'10%',
+									width:'90%',
+									height:'70%'
+								},
+								hAxis : {
+									title:dataTitle + pass.space() + pass.space(true) + dataTitle2,
+									width:'100%',
+									textPosition: 'none',
+									gridlines:{color: '#e7e7e7', slantedText: true},
+								},
+								vAxis : {
+									gridlines:{color: '#e7e7e7', count: -1, viewWindowMode: 'pretty', slantedText: true},
+								},
+								curveType : 'function'
+							};
+
+							var chart = new google.visualization.LineChart(document.getElementById('chart'+(n+1)));
+							chart.draw(data, options);
+						};
+					});
+				};
+
+				$('.ar').off().on('click', function(){
+					var old = step;
+
+					if($(this).hasClass('left')){
+						step++;
+					} else {
+						if(step > 1) step--;
+					};
+
+					if(old != step) staticDraw();
+				});
+
+				$('button.date').off().on('click', function(){
+					days = $(this).attr('data-term');
+					step = 1;
+
+					$(this).addClass('on').siblings('.date').removeClass('on');
+
+					staticDraw();
+				});
+			});
+
+			function contentPrint(){
+				var origin = $("#wrap").html();
+				var pcontent = $("#contents").html();
+				$("#wrap").html(pcontent);
+				window.print();
+				$("#wrap").html(origin);
+				window.location.reload(true);
+			};
+		</script>
+
+	</body>
+</html>

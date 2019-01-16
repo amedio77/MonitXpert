@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>PaaS Monitoring</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="resources/css/layout.css" />
+		<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui-timepicker.js"></script>
+		<script type="text/javascript" src="resources/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="resources/js/common.js"></script>
+	</head>
+	<body>
+
+		<!-- Wrap -->
+		<div id="wrap">
+			
+			<!-- Header -->
+			<header>
+				<h1><a href="index.html"><img src="resources/img/h1_logo.png" alt="PaaS Monitoring" ></a></h1>
+				<nav>
+					<ul>
+						<li><a href="#" class="alarmView"><span>0</span><img src="resources/img/btn__header_alarm.png" alt="alarm" ></a></li>
+						<li><a href="#" class="timeSetting"><img src="resources/img/btn__header_cal.png" alt="calendar" ></a></li>
+						<li><a href="javascript:location.reload();"><img src="resources/img/btn__header_reload.png" alt="reload" ></a></li>
+						<li class="outBtn">
+							<a href="#"><img src="resources/img/btn__header_user.png" alt="user" ></a>
+							<span class="logout"><a href="#">Logout</a></span>
+						</li>
+					</ul>
+				<nav>
+				<div class="timePop">
+					<h4>Time Range</h4>
+					<div class="timer">
+						<div>
+							<input type="radio" name="timeRange" id="tr01" value="15">
+							<label for="tr01">최근 15분</label>
+							<input type="radio" name="timeRange" id="tr02" value="30">
+							<label for="tr02">최근 30분</label>
+							<input type="radio" name="timeRange" id="tr03" value="60">
+							<label for="tr03">최근 1시간</label>
+							<input type="radio" name="timeRange" id="tr04" value="180">
+							<label for="tr04">최근 3시간</label>
+							<input type="radio" name="timeRange" id="tr05" value="360">
+							<label for="tr05">최근 6시간</label>
+							<input type="radio" name="timeRange" id="tr06" value="720">
+							<label for="tr06">최근 12시간</label>
+							<input type="radio" name="timeRange" id="tr07" value="1440">
+							<label for="tr07">최근 1일</label>
+							<input type="radio" name="timeRange" id="tr08" value="10080">
+							<label for="tr08">최근 이번주</label>
+							<input type="radio" name="timeRange" id="tr09" value="40320">
+							<label for="tr09">최근 이번달</label>
+						</div>
+						<div style="display:none;">
+							<input type="radio" name="timeRange" id="tr10">
+							<label for="tr10">수동설정</label>
+							<input type="text" id="from" name="from">
+							<input type="text" id="to" name="to">
+						</div>
+					</div>
+					<h4>Refreshing Time</h4>
+					<div class="refresh">
+						<div class="select_wrap">
+							<select id="timeSelect">
+								<option value="0">OFF</option>
+								<option value="1">1m</option>
+								<option value="5">5m</option>
+								<option value="15">15m</option>
+								<option value="30">30m</option>
+								<option value="60">1h</option>
+								<option value="120">2h</option>
+								<option value="1440">1d</option>
+							</select>
+							<label for="timeSelect">OFF</label>
+						</div>
+					</div>
+					<div class="btnWrap center">
+						<button class="close">Close</button>
+						<button class="save">Save Changes</button>
+					</div>
+					<a href="#" class="close">close</a>
+				</div>
+			</header>
+			<!-- // Header -->
+
+			<!-- Container -->
+			<div id="container">
+				
+				<!-- Navigation -->
+				<nav>
+					<ul>
+						<li><a href="bosh.html">Bosh</a></li>
+						<li><a href="paas.html">PaaS-TA</a></li>
+						<li><a href="cont.html">Container</a></li>
+						<li class="on">
+							<a href="alarm_policy.html"><span>Alarm</span></a>
+							<ul>
+								<li><a href="alarm_policy.html">Policy</a></li>
+								<li class="on"><a href="alarm_status.html">Status</a></li>
+								<li><a href="alarm_statis.html">Statistics</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<!-- // Navigation -->
+
+				<!-- Contents -->
+				<section id="contents">
+					
+					<!-- Location -->
+					<div class="location">
+						<ul>
+							<li><a href="#">PaaS Monitoring</a></li>
+							<li><a href="#">Alarm</a></li>
+							<li><a href="#">Status</a></li>
+						</ul>
+					</div>
+                    <!-- // Location -->
+                    
+					<article class="table style01">
+                        <h4>Alarm Status</h4>
+                        <div class="listSearch">
+                            <div class="select_wrap">
+                                <select id="type1">
+                                    <option value="">대상 전체</option>
+                                    <option value="pas">PaaS-TA</option>
+                                    <option value="bos">Bosh</option>
+                                    <option value="con">Container</option>
+                                </select>
+                                <label for="type1">대상 전체</label>
+                            </div>
+                            <div class="select_wrap">
+                                <select id="type2">
+                                    <option value="">자원유형 전체</option>
+                                    <option value="cpu">CPU</option>
+                                    <option value="memory">Memory</option>
+                                    <option value="disk">Disk</option>
+                                </select>
+                                <label for="type2">자원유형 전체</label>
+                            </div>
+                            <div class="select_wrap">
+                                <select id="type3">
+                                    <option value="">Alarm 등급 전체</option>
+                                    <option value="warning">Warning</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                                <label for="type3">Alarm 등급 전체</label>
+                            </div>
+                            <div class="select_wrap">
+                                <select id="type4">
+                                    <option value="">Alarm 상태 전체</option>
+                                    <option value="1">Alarm 발생</option>
+                                    <option value="2">Alarm 처리중</option>
+                                    <option value="3">Alarm 처리완료</option>
+                                </select>
+                                <label for="type4">Alarm 상태 전체</label>
+                            </div>
+                            <button class="search">search</button>
+                        </div>
+
+						<table>
+							<caption>Alarm Status</caption>
+							<colgroup>
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>발생일시</th>
+									<th>서비스타입</th>
+									<th>서비스명</th>
+									<th>IP</th>
+									<th>제목</th>
+									<th>등급</th>
+									<th>조치상태</th>
+								</tr>
+							</thead>
+							<tbody class="alarmStatus">
+							</tbody>
+						</table>
+						<div class="more">
+							<a href="#">더 보기 (총 <strong>0</strong>건)</a>
+						</div>
+                    </article>
+                    
+                    <article class="table style05 alarmDetail">
+                        <div class="listBtns">
+                            <a href="javascript:void(0);" class="receipt">Receipt</a>
+                        </div>
+
+                        <h4>Alarm Detail</h4>
+                        <div class="tableWrap">
+                            <table>
+                                <caption>Origin Detail</caption>
+                                <colgroup>
+                                    <col width="10%">
+                                    <col width="13%">
+                                    <col width="10%">
+                                    <col width="13%">
+                                    <col width="10%">
+                                    <col width="14%">
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>Origin Type</th>
+                                        <td class="originType"></td>
+                                        <th>Origin Name</th>
+                                        <td class="originName"></td>
+                                        <th>Origin IP</th>
+                                        <td class="ip"></td>
+                                    </tr>
+                            </table>
+                        </div>
+                        <div class="tableWrap">
+                            <table>
+                                <caption>Alram Detail</caption>
+                                <colgroup>
+                                    <col width="10%">
+                                    <col width="13%">
+                                    <col width="10%">
+                                    <col width="13%">
+                                    <col width="10%">
+                                    <col width="14%">
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>Alarm Type</th>
+                                        <td class="alarmType"></td>
+                                        <th>Alarm Level</th>
+                                        <td class="level"></td>
+                                        <th>Alarm Date</th>
+                                        <td class="alarmSendDate"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Alarm Title</th>
+                                        <td colspan="5" class="alarmTitle"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Alarm Message</th>
+                                        <td colspan="5" class="alarmMessage"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+                    
+                    <article class="alarmHistory">
+                        <h4 class="hisWrap" style="display:none;">Alarm Action History</h4>
+                        <ul class="hisWrap" style="display:none;">
+                        </ul>
+                        <div>
+                            <h4>Action Contents</h4>
+                            <textarea></textarea>
+                            <div class="btnWrap center">
+                                <button class="save">저장 (조치내용만 입력)</button>
+                                <button class="coml">조치완료 (조치내용도 함께 입력)</button>
+                            </div>
+                        </div>
+                    </article>
+				</section>
+				<!-- // Contents -->
+
+			</div>
+			<!-- // Container -->
+
+		</div>
+        <!-- // Wrap -->
+        
+        <script type="text/javascript">
+            $(function(){
+                var idNumber = 0;
+                var alarmBull = $.cookie('alarm');
+                var alarmStatusLoad = pass.url + 'paas/alarm/statuses?pageItems=1000&pageIndex=1';
+
+                // paasta Alarm Data Load
+                var alarmStatusData = pass.ajaxLoad(alarmStatusLoad);
+
+                alarmListDraw(alarmStatusData.data);
+
+                function alarmListDraw(data){                    
+                    $('.alarmStatus').empty();
+
+                    $.each(data, function(n){
+                        /*
+                        alarmCnt: 1
+                        alarmMessage: "doppler/3 memory 의 상태critical↵memory 의 임계치인90%를 초과하였습니다. ↵ 현재 사용률 [95.51]% 입니다. "
+                        alarmSendDate: "2018-12-03 15:48:58"
+                        alarmTitle: "[doppler/3]의 memory 상태 [critical]"
+                        alarmType: "memory"
+                        appIndex: 0
+                        appName: ""
+                        appYn: "N"
+                        containerName: ""
+                        id: 47
+                        ip: "10.20.20.90"
+                        level: "critical"
+                        originId: 148
+                        originName: "doppler/3"
+                        originType: "pas"
+                        regDate: "2018-12-03 15:48:58"
+                        regUser: "Bat"
+                        resolveStatus: "1"
+                        resolveStatusName: "Alarm 발생"
+                        userName: "admin"
+                        */
+                        switch (this.originType){
+                            case 'bos':
+                                var originType = 'Bosh';
+                            break;
+                            case 'pas':
+                                var originType = 'PaaS-TA';
+                            break;
+                            case 'con':
+                                var originType = 'Container';
+                            break;
+                        }
+                        console.log(this.resolveStatus)
+
+                        var html = '<tr class="view'+this.resolveStatus+'">';
+                        html +=     '<td>'+this.alarmSendDate+'</td>';
+                        html +=     '<td>'+originType+'</td>';
+                        html +=     '<td>'+this.originName+'</td>';
+                        html +=     '<td>'+this.ip+'</td>';
+                        html +=     '<td class="left"><a href="javascript:void(0);">'+this.alarmTitle+'</a></td>';
+                        html +=     '<td><strong class="'+this.level+'">'+this.level+'</strong></td>';
+                        html +=     '<td>'+this.resolveStatusName+'</td>';
+                        html += '</tr>';
+
+                        $('.alarmStatus').append(html).find('tr').last().data({
+                            'id' : this.id,
+                            'originType' : originType,
+                            'originName' : this.originName,
+                            'ip' : this.ip,
+                            'alarmType' : this.alarmType,
+                            'level' : this.level,
+                            'alarmTitle' : this.alarmTitle,
+                            'alarmMessage' : this.alarmMessage,
+                            'alarmSendDate' : this.alarmSendDate
+                        });
+
+                        if(n == 0){
+                            $('.originType').text(originType).data({
+                                'id' :this.id
+                            });
+                            $('.originName').text(this.originName);
+                            $('.ip').text(this.ip);
+                            $('.alarmType').text(this.alarmType);
+                            $('.level').text(this.level);
+                            $('.alarmTitle').text(this.alarmTitle);
+                            $('.alarmMessage').text(this.alarmMessage);
+                            $('.alarmSendDate').text(this.alarmSendDate);
+
+                            var history = pass.ajaxLoad(pass.url + 'paas/alarm/status/'+this.id);
+
+                            if(history.data.length > 0){
+                                historyDraw(history.data);
+                            };
+                        };
+
+                        if(alarmBull == 'false' && n > 4) $('.alarmStatus').find('tr').last().hide();
+                    });
+                    
+                    if(data.length > 5){
+                        $('.more').show().find('strong').text(data.length - 5);
+                    } else {
+                        $('.more').hide();
+                    };
+
+                    if(alarmBull == 'true'){
+                        console.log('a');
+                        $('.alarmStatus').find('tr').not('.view1').hide();
+                        $('.more').hide();
+                        $('#type4').val(1).change();
+                    };
+                };
+
+                function historyDraw(data){
+                    $('.alarmHistory').slideDown(300).find('ul').empty();
+
+                    $('.alarmHistory .hisWrap').show();
+
+                    $.each(data, function(){
+                        /*
+                        ModiDate: "2018-12-05 04:23:38"
+                        alarmActionDesc: "jkgckhcv"
+                        alarmId: "47"
+                        id: 23
+                        modiUser: "system"
+                        regDate: "2018-12-05 13:23:38"
+                        regUser: "system"
+                        */
+
+                        var html = '<li>';
+                        html += '<span>'+this.ModiDate+'</span>';
+                        html += '<input type="text" value="'+this.alarmActionDesc+'">';
+                        html += '<div><button class="update">Update</button><button class="delete">Delete</button></div>';
+                        html += '</li>';
+
+                        $('.alarmHistory ul').append(html).find('li').last().data({
+                            'id' : this.id,
+                            'alarmId' : this.alarmId,
+                            'ModiDate' : this.ModiDate,
+                            'modiUser' : this.modiUser,
+                            'regDate' : this.regDate,
+                            'regUser' : this.regUser,
+                            'alarmActionDesc' : this.alarmActionDesc
+                        });
+                    });
+
+                    historyEvent();
+                };
+                
+                function historyEvent(){
+                    $('.alarmHistory').find('button.update').off().on('click', function(){
+                        console.log($(this).parents('li').data('id'));
+                        pass.ajaxPost(pass.url + 'paas/alarm/action/'+$(this).parents('li').data('id'), 'PATCH', '{"alarmActionDesc":"'+$(this).parent().siblings('input').val()+'"}');
+
+                        alert('저장되었습니다.');
+                    });
+
+                    $('.alarmHistory').find('button.delete').off().on('click', function(){
+                        pass.ajaxPost(pass.url + 'paas/alarm/action/'+$(this).parents('li').data('id'), 'DELETE');
+
+                        alert('삭제되었습니다.');
+
+                        $(this).parents('li').remove();
+
+                        if($('.alarmHistory ul').find('li').length == 0){
+                            $('.alarmHistory .hisWrap').hide();
+                        };
+                    });
+                };
+
+                $('.search').off().on('click', function(){
+                    var searchData = pass.ajaxLoad(alarmStatusLoad+'&originType='+$('#type1').val()+'&alarmType='+$('#type2').val()+'&resolveStatus='+$('#type4').val()+'&level='+$('#type3').val());
+
+                    alarmListDraw(searchData.data);
+                });
+
+                $('.more a').off().on('click', function(){
+                    $(this).parent().hide();
+                    $('.alarmStatus').find('tr').show();
+                });
+
+                $('.alarmStatus tr').find('a').off().on('click', function(){
+                    $('.originType').text($(this).parents('tr').data('originType')).data({
+                        'id' : $(this).parents('tr').data('id')
+                    });
+                    $('.originName').text($(this).parents('tr').data('originName'));
+                    $('.ip').text($(this).parents('tr').data('ip'));
+                    $('.alarmType').text($(this).parents('tr').data('alarmType'));
+                    $('.level').text($(this).parents('tr').data('level'));
+                    $('.alarmTitle').text($(this).parents('tr').data('alarmTitle'));
+                    $('.alarmMessage').text($(this).parents('tr').data('alarmMessage'));
+                    $('.alarmSendDate').text($(this).parents('tr').data('alarmSendDate'));
+                });
+
+                $('.receipt').off().on('click', function(){
+                    $('.alarmHistory').slideDown(300);
+                });
+
+                $('.save').off().on('click', function(){
+                    var actionPush = '{"alarmId":'+$('.originType').data('id')+',"alarmActionDesc":"'+$('textarea').val()+'"}';
+                    
+                    pass.ajaxPost(pass.url + 'paas/alarm/action/'+$(this).parents('li').data('id'), 'POST', JSON.parse(actionPush));
+
+                    alert('저장되었습니다.');
+                });
+
+                $('.coml').off().on('click', function(){
+                    var actionPush = '{"alarmId":'+$('.originType').data('id')+',"alarmActionDesc":"'+$('textarea').val()+'"}';
+                    pass.ajaxPost(pass.url + 'paas/alarm/action/'+$(this).parents('li').data('id'), 'POST', JSON.parse(actionPush));
+
+                    alert('저장되었습니다.');
+                });
+            });
+        </script>
+
+	</body>
+</html>

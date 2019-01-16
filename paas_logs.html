@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>PaaS Monitoring</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="resources/css/layout.css" />
+		<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui-timepicker.js"></script>
+		<script type="text/javascript" src="resources/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="resources/js/common.js"></script>
+	</head>
+	<body>
+
+		<!-- Wrap -->
+		<div id="wrap">
+			
+			<!-- Header -->
+			<header>
+				<h1><a href="index.html"><img src="resources/img/h1_logo.png" alt="PaaS Monitoring" ></a></h1>
+				<nav>
+					<ul>
+						<li><a href="#" class="alarmView"><span>0</span><img src="resources/img/btn__header_alarm.png" alt="alarm" ></a></li>
+						<li><a href="#" class="timeSetting"><img src="resources/img/btn__header_cal.png" alt="calendar" ></a></li>
+						<li><a href="javascript:location.reload();"><img src="resources/img/btn__header_reload.png" alt="reload" ></a></li>
+						<li class="outBtn">
+							<a href="#"><img src="resources/img/btn__header_user.png" alt="user" ></a>
+							<span class="logout"><a href="#">Logout</a></span>
+						</li>
+					</ul>
+				<nav>
+				<div class="timePop">
+					<h4>Time Range</h4>
+					<div class="timer">
+						<div>
+							<input type="radio" name="timeRange" id="tr01" value="15">
+							<label for="tr01">최근 15분</label>
+							<input type="radio" name="timeRange" id="tr02" value="30">
+							<label for="tr02">최근 30분</label>
+							<input type="radio" name="timeRange" id="tr03" value="60">
+							<label for="tr03">최근 1시간</label>
+							<input type="radio" name="timeRange" id="tr04" value="180">
+							<label for="tr04">최근 3시간</label>
+							<input type="radio" name="timeRange" id="tr05" value="360">
+							<label for="tr05">최근 6시간</label>
+							<input type="radio" name="timeRange" id="tr06" value="720">
+							<label for="tr06">최근 12시간</label>
+							<input type="radio" name="timeRange" id="tr07" value="1440">
+							<label for="tr07">최근 1일</label>
+							<input type="radio" name="timeRange" id="tr08" value="10080">
+							<label for="tr08">최근 이번주</label>
+							<input type="radio" name="timeRange" id="tr09" value="40320">
+							<label for="tr09">최근 이번달</label>
+						</div>
+						<div style="display:none;">
+							<input type="radio" name="timeRange" id="tr10">
+							<label for="tr10">수동설정</label>
+							<input type="text" id="from" name="from">
+							<input type="text" id="to" name="to">
+						</div>
+					</div>
+					<h4>Refreshing Time</h4>
+					<div class="refresh">
+						<div class="select_wrap">
+							<select id="timeSelect">
+								<option value="0">OFF</option>
+								<option value="1">1m</option>
+								<option value="5">5m</option>
+								<option value="15">15m</option>
+								<option value="30">30m</option>
+								<option value="60">1h</option>
+								<option value="120">2h</option>
+								<option value="1440">1d</option>
+							</select>
+							<label for="timeSelect">OFF</label>
+						</div>
+					</div>
+					<div class="btnWrap center">
+						<button class="close">Close</button>
+						<button class="save">Save Changes</button>
+					</div>
+					<a href="#" class="close">close</a>
+				</div>
+			</header>
+			<!-- // Header -->
+
+			<!-- Container -->
+			<div id="container">
+				
+				<!-- Navigation -->
+				<nav>
+					<ul>
+						<li><a href="bosh.html">Bosh</a></li>
+						<li class="on"><a href="paas.html">PaaS-TA</a></li>
+						<li><a href="cont.html">Container</a></li>
+						<li>
+							<a href="alarm_policy.html"><span>Alarm</span></a>
+							<ul>
+								<li><a href="alarm_policy.html">Policy</a></li>
+								<li><a href="alarm_status.html">Status</a></li>
+								<li><a href="alarm_statis.html">Statistics</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<!-- // Navigation -->
+
+				<!-- Contents -->
+				<section id="contents">
+					
+					<!-- Location -->
+					<div class="location">
+						<ul>
+							<li><a href="#">PaaS Monitoring</a></li>
+							<li><a href="#">Bosh</a></li>
+							<li><a href="#">Logs</a></li>
+						</ul>
+					</div>
+					<!-- // Location -->
+
+                    <article class="boshChart">
+                        <div class="tab style01">
+                            <ul>
+                                <li><a href="paas_chart.html">Chart</a></li>
+                                <li class="on"><a href="#">Logs</a></li>
+                            </ul>
+                            <div>
+                                <a href="paas.html" class="overview">Overview</a>
+                            </div>
+                        </div>
+                        <div class="logs">
+                            <fieldset>
+                                <div>
+                                    <label>Time</label>
+									<input type="text" id="date" style="width:210px;">
+									<a href="#" class="date"><img src="resources/img/btn__icon_cal.png"></a>
+                                    <input type="text" id="strTime" style="width:150px;">
+                                    <em>~</em>
+                                    <input type="text" id="endTime" style="width:150px;">
+                                    <button class="reset">초기화</button>
+                                </div>
+                                <div>
+                                    <label>Message</label>
+                                    <input type="text" id="message" style="width:70%;">
+                                </div>
+                                <div class="btns">
+                                    <button>Search</button>
+                                </div>
+                            </fieldset>
+                            <div class="preText">
+                                <pre></pre>
+                            </div>
+                        </div>
+					
+						<div class="table style01">
+							<table>
+								<caption></caption>
+								<colgroup>
+									<col width="20%">
+									<col width="80%">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>Time</th>
+										<th>Message</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>2017-03-07 10:48:03</td>
+										<td>promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheuspromentheus promentheus promentheus</td>
+									</tr>
+									<tr>
+										<td>2017-03-07 10:48:03</td>
+										<td>promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheuspromentheus promentheus promentheus</td>
+									</tr>
+									<tr>
+										<td>2017-03-07 10:48:03</td>
+										<td>promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheuspromentheus promentheus promentheus</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="paging">
+								<a href="#">&lt;</a>
+								<span>
+									<a href="#" class="on">1</a>
+									<a href="#">2</a>
+									<a href="#">3</a>
+									<a href="#">4</a>
+									<a href="#">5</a>
+									<a href="#">6</a>
+									<a href="#">7</a>
+									<a href="#">8</a>
+									<a href="#">9</a>
+									<a href="#">10</a>
+								</span>
+								<a href="#">&gt;</a>
+							</div>
+						</div>
+					</article>
+				</section>
+				<!-- // Contents -->
+
+			</div>
+			<!-- // Container -->
+
+		</div>
+		<!-- // Wrap -->
+		
+		<script type="text/javascript">
+			$(function(){
+				if($.cookie('name') != null){
+					$('.location ul').append('<li><a href="#">' + $.cookie('name') + '</a></li>');
+				};
+
+				var logData = pass.ajaxLoad(pass.url + 'paas/log/recent?id='+$.cookie('result')+'&logType=cf&pageIndex=1&pageItems=50&period=5m');
+
+				console.log(logData);
+
+				$('#date + .date').off().on('click', function(){$('#date').trigger('focus')})
+				$('#strTime, #endTime').timepicker({
+					// timepicker 설정
+					timeFormat:'HH:mm',
+					controlType:'select',
+					oneLine:false,
+				});
+
+				$('#date').datepicker({
+					dateFormat:'yy-mm-dd',
+					monthNames: ['1 월','2 월','3 월','4 월','5 월','6 월','7 월','8 월','9 월','10 월','11 월','12 월'], // 개월 텍스트 설정
+					monthNamesShort: ['1 월','2 월','3 월','4 월','5 월','6 월','7 월','8 월','9 월','10 월','11 월','12 월'], // 개월 텍스트 설정
+					dayNamesMin:[ '일', '월', '화', '수', '목', '금', '토' ],
+					showMonthAfterYear:true,
+					yearSuffix : '년'
+				});
+
+				$('button.reset').off().on('click', function(){
+					$('#date, #strTime, #endTime').val('');
+				});
+			})
+		</script>
+
+	</body>
+</html>

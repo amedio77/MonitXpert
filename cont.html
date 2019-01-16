@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>PaaS Monitoring</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="resources/css/layout.css" />
+		<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="resources/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="resources/js/common.js"></script>
+	</head>
+	<body>
+
+		<!-- Wrap -->
+		<div id="wrap">
+			
+			<!-- Header -->
+			<header>
+				<h1><a href="index.html"><img src="resources/img/h1_logo.png" alt="PaaS Monitoring" ></a></h1>
+				<nav>
+					<ul>
+						<li><a href="#" class="alarmView"><span>0</span><img src="resources/img/btn__header_alarm.png" alt="alarm" ></a></li>
+						<li><a href="#" class="timeSetting"><img src="resources/img/btn__header_cal.png" alt="calendar" ></a></li>
+						<li><a href="javascript:location.reload();"><img src="resources/img/btn__header_reload.png" alt="reload" ></a></li>
+						<li class="outBtn">
+							<a href="#"><img src="resources/img/btn__header_user.png" alt="user" ></a>
+							<span class="logout"><a href="#">Logout</a></span>
+						</li>
+					</ul>
+				<nav>
+				<div class="timePop">
+					<h4>Time Range</h4>
+					<div class="timer">
+						<div>
+							<input type="radio" name="timeRange" id="tr01" value="15">
+							<label for="tr01">최근 15분</label>
+							<input type="radio" name="timeRange" id="tr02" value="30">
+							<label for="tr02">최근 30분</label>
+							<input type="radio" name="timeRange" id="tr03" value="60">
+							<label for="tr03">최근 1시간</label>
+							<input type="radio" name="timeRange" id="tr04" value="180">
+							<label for="tr04">최근 3시간</label>
+							<input type="radio" name="timeRange" id="tr05" value="360">
+							<label for="tr05">최근 6시간</label>
+							<input type="radio" name="timeRange" id="tr06" value="720">
+							<label for="tr06">최근 12시간</label>
+							<input type="radio" name="timeRange" id="tr07" value="1440">
+							<label for="tr07">최근 1일</label>
+							<input type="radio" name="timeRange" id="tr08" value="10080">
+							<label for="tr08">최근 이번주</label>
+							<input type="radio" name="timeRange" id="tr09" value="40320">
+							<label for="tr09">최근 이번달</label>
+						</div>
+						<div style="display:none;">
+							<input type="radio" name="timeRange" id="tr10">
+							<label for="tr10">수동설정</label>
+							<input type="text" id="from" name="from">
+							<input type="text" id="to" name="to">
+						</div>
+					</div>
+					<h4>Refreshing Time</h4>
+					<div class="refresh">
+						<div class="select_wrap">
+							<select id="timeSelect">
+								<option value="0">OFF</option>
+								<option value="1">1m</option>
+								<option value="5">5m</option>
+								<option value="15">15m</option>
+								<option value="30">30m</option>
+								<option value="60">1h</option>
+								<option value="120">2h</option>
+								<option value="1440">1d</option>
+							</select>
+							<label for="timeSelect">OFF</label>
+						</div>
+					</div>
+					<div class="btnWrap center">
+						<button class="close">Close</button>
+						<button class="save">Save Changes</button>
+					</div>
+					<a href="#" class="close">close</a>
+				</div>
+			</header>
+			<!-- // Header -->
+
+			<!-- Container -->
+			<div id="container">
+				
+				<!-- Navigation -->
+				<nav>
+					<ul>
+						<li><a href="bosh.html">Bosh</a></li>
+						<li><a href="paas.html">PaaS-TA</a></li>
+						<li class="on"><a href="cont.html">Container</a></li>
+						<li>
+							<a href="alarm_policy.html"><span>Alarm</span></a>
+							<ul>
+								<li><a href="alarm_policy.html">Policy</a></li>
+								<li><a href="alarm_status.html">Status</a></li>
+								<li><a href="alarm_statis.html">Statistics</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<!-- // Navigation -->
+
+				<!-- Contents -->
+				<section id="contents">
+					
+					<!-- Location -->
+					<div class="location">
+						<ul>
+							<li><a href="#">PaaS Monitoring</a></li>
+							<li><a href="#">Container</a></li>
+						</ul>
+					</div>
+					<!-- // Location -->
+					
+					<!-- Overview -->
+					<div class="overview cellView">
+						<div class="running">
+							<span>Cell</span>
+							<strong>-</strong>
+						</div>
+						<ul>
+							<li class="warning">
+								<a href="#">
+									<span>Warning</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="critical">
+								<a href="#">
+									<span>Critical</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="failed">
+								<a href="#">
+									<span>Failed</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="total">
+								<span>Total</span>
+								<strong>-</strong>
+							</li>
+						</ul>
+					</div>
+					<!-- // Overview -->
+					
+					
+					<!-- Overview -->
+					<div class="overview contView">
+						<div class="running">
+							<span>Container</span>
+							<strong>-</strong>
+						</div>
+						<ul>
+							<li class="warning">
+								<a href="#">
+									<span>Warning</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="critical">
+								<a href="#">
+									<span>Critical</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="failed">
+								<a href="#">
+									<span>Failed</span>
+									<strong>-</strong>
+								</a>
+							</li>
+							<li class="total">
+								<span>Total</span>
+								<strong>-</strong>
+							</li>
+						</ul>
+					</div>
+					<!-- // Overview -->
+
+					<article class="table style01">
+						<h4>Container Summary</h4>
+						<div class="listSearch">
+                            <div class="select_wrap">
+                                <select id="type">
+                                    <option>Name</option>
+                                    <option>IP</option>
+                                </select>
+                                <label for="type">Name</label>
+                            </div>
+                            <input type="text" placeholder="Search" value="">
+                            <button class="search">search</button>
+                        </div>
+						<table class="containerSummary">
+							<caption>Container Summary List</caption>
+							<colgroup>
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>Zone</th>
+									<th>Cell</th>
+									<th>Application</th>
+									<th>Container</th>
+									<th>Running</th>
+									<th>Critical</th>
+									<th>Warning</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div class="paging" style="display:none;">
+							<a href="#">&lt;</a>
+							<span>
+							</span>
+							<a href="#">&gt;</a>
+						</div>
+					</article>
+					
+					<article class="table style01">
+						<h4>Cell & Container Relationship <strong class="containerTopTitle"></strong></h4>
+						<table class="containerTop">
+							<caption></caption>
+							<colgroup>
+								<col width="200">
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+								<col width="">
+							</colgroup>
+							<thead>
+								<tr>
+								<th>Cell Name</th>
+								<th>Application</th>
+								<th>Container</th>
+								<th>Running</th>
+								<th>Critical</th>
+								<th>Warning</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</article>
+				</section>
+				<!-- // Contents -->
+
+			</div>
+			<!-- // Container -->
+
+		</div>
+		<!-- // Wrap -->
+
+		<div class="popWrap">
+			<article class="table style01 status">
+				<h4>Container Summary</h4>
+				<table class="statusDetail">
+					<caption>Container Summary List</caption>
+					<colgroup>
+						<col width="">
+						<col width="">
+						<col width="">
+						<col width="">
+						<col width="">
+						<col width="">
+						<col width="">
+						<col width="">
+						<col width="">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Address</th>
+							<th>State</th>
+							<th>Core</th>
+							<th>CPU<br>Used(%)</th>
+							<th>Total<br>Memory(MB)</th>
+							<th>Memory<br>Used(%)</th>
+							<th>Total<br>Disk(MB)</th>
+							<th>Disk<br>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div class="paging" style="display:none;">
+					<a href="#">&lt;</a>
+					<span>
+					</span>
+					<a href="#">&gt;</a>
+				</div>
+				<a href="#" class="close">close</a>
+			</article>
+		</div>
+
+		<script type="text/javascript">
+			$(function(){
+
+				var containerID = '';
+				var containerSummaryIndex = 1;
+				var containerSummaryName = '';
+				var cellOverviewURL = pass.url + 'paas/cell/overview';
+				var containerOverviewURL = pass.url + 'paas/container/overview';
+				var containerSummaryURL = pass.url + 'paas/container/summary?pageIndex=';
+				var containerTopProcessURL = pass.url + 'paas/container/relationship';
+
+				// container Overview Data Load
+				var cellOverviewData = pass.ajaxLoad(cellOverviewURL);
+				var containerOverviewData = pass.ajaxLoad(containerOverviewURL);
+
+				console.log(cellOverviewData.running);
+
+				$('.cellView').find('.running').find('strong').text(cellOverviewData.running);
+				if(cellOverviewData.warning > 0){
+					$('.cellView').find('.warning').find('strong').text(cellOverviewData.warning);
+				} else {
+					$('.cellView').find('.warning').hide();
+				}
+				if(cellOverviewData.critical > 0){
+					$('.cellView').find('.critical').find('strong').text(cellOverviewData.critical);
+				} else {
+					$('.cellView').find('.critical').hide();
+				}
+				if(cellOverviewData.failed > 0){
+					$('.cellView').find('.failed').find('strong').text(cellOverviewData.failed);
+				} else {
+					$('.cellView').find('.failed').hide();
+				}
+				if(cellOverviewData.total > 0){
+					$('.cellView').find('.total').find('strong').text(cellOverviewData.total);
+				} else {
+					$('.cellView').find('.total').hide();
+				};
+
+
+				$('.contView').find('.running').find('strong').text(containerOverviewData.running);
+				if(containerOverviewData.warning > 0){
+					$('.contView').find('.warning').find('strong').text(containerOverviewData.warning);
+				} else {
+					$('.contView').find('.warning').hide();
+				}
+				if(containerOverviewData.critical > 0){
+					$('.contView').find('.critical').find('strong').text(containerOverviewData.critical);
+				} else {
+					$('.contView').find('.critical').hide();
+				}
+				if(containerOverviewData.failed > 0){
+					$('.contView').find('.failed').find('strong').text(containerOverviewData.failed);
+				} else {
+					$('.contView').find('.failed').hide();
+				}
+				if(containerOverviewData.total > 0){
+					$('.contView').find('.total').find('strong').text(containerOverviewData.total);
+				} else {
+					$('.contView').find('.total').hide();
+				};
+
+				var containerSummaryData;
+				var containerTopData = '';
+
+				var containerSummary = $('.containerSummary tbody'); // container Summary table ID
+				var containerTop = $('.containerTop tbody'); // container Summary table ID
+
+
+				summaryDraw();
+
+				function summaryDraw(){
+					// container Summary Data Load
+					containerSummaryData = pass.ajaxLoad(containerSummaryURL+containerSummaryIndex+'&pageItems=10&name='+containerSummaryName);
+
+					containerSummary.empty(); // container Summary Clear
+
+					console.log(containerSummaryData);
+
+					$.each(containerSummaryData.data, function(n){ // container Summary List Add
+						/************************ Data Example *************************
+						appCnt: "1"
+						cellCnt: "1"
+						cellName: ""
+						containerCnt: "2"
+						criticalCnt: "0"
+						failedCnt: "0"
+						runningCnt: "2"
+						warningCnt: "0"
+						zoneName: "z1"
+						***************************************************************/
+						var html = '<tr>';
+						html += '	<td>'+this.zoneName+'</td>';
+						html += '	<td>'+this.cellCnt+'</td>';
+						html += '	<td>'+this.appCnt+'</td>';
+						html += '	<td>'+this.containerCnt+'</td>';
+						html += '	<td>'+this.runningCnt+'</td>';
+						html += '	<td>'+this.criticalCnt+'</td>';
+						html += '	<td>'+this.warningCnt+'</td>';
+						html += '</tr>';
+
+						containerSummary.append(html).find('tr').last().data({'id':this.zoneName});
+
+						if(n == 0){
+							containerID = this.zoneName;
+
+							containerTopFunction(this.zoneName);
+						};
+					});
+				};
+				
+
+				if(containerSummaryData.totalCount > 10) $('.containerSummary').next('.paging').show();
+
+				for(var i=1; i <= Math.ceil(containerSummaryData.totalCount/10); i++){
+					$('.containerSummary').next('.paging').find('span').append('<a href="javascript:void(0);">'+i+'</a>');
+				};
+
+				$('.containerSummary').next('.paging').find('span').find('a').eq(containerSummaryIndex-1).addClass('on');
+
+				function containerTopFunction(name){
+					var containerTopData = pass.ajaxLoad(containerTopProcessURL);
+
+					$('.containerTopTitle').text('[ '+name+' ]');
+				
+					containerTop.empty();
+					$.each(containerTopData, function(n){ // container Top List Add
+						if(this.zoneName == name){
+							/************************ Data Example *************************
+							appCnt: "1"
+							cellCnt: ""
+							cellIp: "10.20.10.136"
+							cellName: "diego-cell/0"
+							containerCnt: "2"
+							containers: (2) [{
+								0: {appName: "hello", appIndex: "1", status: "running", containerId: "wqsq7f3rfsfp-0"}
+								1: {appName: "hello", appIndex: "3", status: "running", containerId: "wqsq7f3rfsfo-0"}
+							}]
+							criticalCnt: "0"
+							failedCnt: "0"
+							runningCnt: "2"
+							warningCnt: "0"
+							zoneName: "z1"
+							***************************************************************/
+							var html = '<tr>';
+							if(this.containers.length > 1){
+								html += '	<td rowspan="'+this.containers.length+'">'+this.cellName+'</td>';
+							} else {
+								html += '	<td>'+this.cellName+'</td>';
+							}
+							html += '	<td>'+this.appCnt+'</td>';
+							html += '	<td>'+this.containerCnt+'</td>';
+							html += '	<td>'+this.runningCnt+'</td>';
+							html += '	<td>'+this.criticalCnt+'</td>';
+							html += '	<td>'+this.warningCnt+'</td>';
+							html += '</tr>';
+							
+							containerTop.append(html);
+							
+							if(this.containers.length > 0){
+								var html = '<tr><td colspan="5" class="left">';
+
+								$.each(this.containers, function(x){
+									console.log(this.appName);
+									html +=		'<span class="contChart '+this.status+'" data-id="'+this.containerId+'">'+this.appIndex;
+									html +=			'<div class="flag">';
+									html +=				'<strong>App Name</strong><em class="name">'+this.appName+'</em>';
+									html +=				'<strong>Status</strong><em class="'+this.status+'">'+this.status+'</em>';
+									html +=			'</div>';
+									html +=		'</span>';
+								});
+
+								html += '</td></tr>';
+									
+								containerTop.append(html);
+							};
+						};
+					});
+
+					$('.contChart').off().on('click', function(){
+						$.cookie('result', $(this).attr('data-id'));
+						$.cookie('name', $(this).find('.name').text());
+
+						location.href = 'cont_chart.html';
+					});
+				};
+				
+				/***************************** Event *********************************/
+				containerSummary.find('tr').off().on('click', function(){
+					containerID = $(this).data('id');
+
+					containerTopFunction(containerID);
+				});
+
+				$('.containerSummary').next('.paging').find('span').find('a').off().on('click', function(){
+					containerSummaryIndex = $(this).text();
+					$(this).addClass('on').siblings().removeClass('on');
+					summaryDraw();
+				});
+
+				$('.search').off().on('click', function(){
+					containerSummaryName = $(this).prev('input').val();
+					summaryDraw();
+				});
+
+				$('.overview ul li a').off().on('click', function(){
+					var thisClass = $(this).parent().attr('class');
+
+					$('.status h4').text(thisClass.toUpperCase());
+					
+					var containerOverviewDetail = pass.ajaxLoad(cellOverviewURL+'/'+thisClass);
+
+					$('.statusDetail tbody').empty();
+
+					console.log(containerOverviewDetail);
+					
+					if(containerOverviewDetail.length > 0){
+						$.each(containerOverviewDetail, function(n){
+							var html = '<tr>';
+							html += '	<td><a href="javacsrtip:void(0);">'+this.cellName+'</a></td>';
+							html += '	<td>'+this.cellIp+'</td>';
+							html += '	<td>'+this.status+'</td>';
+							html += '	<td>'+this.core+'</td>';
+							html += '	<td>'+pass.numberComma(2, this.cpuUsage)+'</td>';
+							html += '	<td>'+pass.numberComma(0, this.totalMemory)+'</td>';
+							html += '	<td>'+pass.numberComma(2, this.memoryUsage)+'</td>';
+							html += '	<td>'+pass.numberComma(0, this.totalDisk)+'</td>';
+							html += '	<td>'+this.diskStatus+'</td>';
+							html += '</tr>';
+
+							$('.statusDetail tbody').append(html).find('tr').last().data({'id':this.id});
+						});
+
+						$('.popWrap').fadeIn(300);
+					};
+				});
+			})
+		</script>
+
+	</body>
+</html>
