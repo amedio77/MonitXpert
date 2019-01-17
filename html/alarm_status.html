@@ -476,7 +476,7 @@
                     });
 
                     $('.receipt').off().on('click', function(){
-                        $('.alarmHistory').slideDown(300);
+                        $('.alarmHistory').slideToggle(300).find('textarea').val('');
                     });
 
                     $('.save').off().on('click', function(){
@@ -484,6 +484,8 @@
                         console.log(actionPush);
                         
                         pass.ajaxPost(pass.url + 'paas/alarm/action/'+$('.originType').data('id'), 'POST', JSON.parse(actionPush));
+
+                        $('.alarmHistory').find('textarea').val('');
 
                         alert('저장되었습니다.');
                     });
@@ -493,6 +495,8 @@
                         console.log(actionPush);
                         
                         pass.ajaxPost(pass.url + 'paas/alarm/action/'+$('.originType').data('id'), 'PATCH', JSON.parse(actionPush));
+
+                        $('.alarmHistory').find('textarea').val('');
 
                         alert('저장되었습니다.');
                     });
