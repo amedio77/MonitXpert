@@ -331,6 +331,7 @@
 					google.charts.load('current', {'packages':['corechart']});
 
 					$.each(staticURL, function(n){
+						console.log(staticURL[n]);
 						google.charts.setOnLoadCallback(drawChart);
 
 						function drawChart() {

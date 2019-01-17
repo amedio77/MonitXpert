@@ -80,7 +80,7 @@ body.login {background:#e7ebf6;}
 
 header {position:fixed; top:0; left:0; z-index:100; width:100%; min-width:1580px; height:56px; background:#5e6882; border-bottom:1px solid #565b68;}
 header h1 {overflow:hidden; text-align:center;}
-header nav {position:absolute; right:30px; top:0;}
+header nav {position:absolute; right:30px; top:0; z-index:100;}
 header nav ul {display:inline-block; width:100%;}
 header nav ul li {position:relative; float:left;}
 header nav ul li > a {position:relative; display:block; height:55px; padding:7px 5px; overflow:hidden;}
@@ -88,14 +88,14 @@ header nav ul li > a img {height:100%;}
 header nav ul li > a span {position:absolute; top:10px; right:0; width:24px; height:24px; color:#fff; font-size:14px; text-align:center; line-height:23px; background:#ff0000; border-radius:10px;}
 header .alarmPop {display:none; position:fixed; top:56px; right:115px; width:420px; border:2px solid #222; background:#fff; box-shadow:1px 1px 5px rgba(0,0,0,.3);}
 header nav ul li > .logout {position:absolute; top:57px; right:0; z-index:9999; width:160px; height:60px; background:#5e6882; opacity:0; transition:.5s;}
-header nav ul li > .logout a {position:relative; display:block; padding-left:35px; color:#fff; line-height:60px;}
+header nav ul li > .logout a {z-index:1; position:relative; display:block; padding-left:35px; color:#fff; line-height:60px;}
 header nav ul li > .logout a:before {content:''; position:absolute; top:21px; right:45px; width:20px; height:20px; border:3px solid #fba602; border-radius:15px;}
 header nav ul li > .logout a:after {content:''; position:absolute; top:16px; right:50px; width:10px; height:20px; border:3px solid #5e6882; background:#fba602; border-radius:5px;}
 header nav ul li.outBtn:hover .logout {opacity:1;}
 
 
 
-header .timePop {display:none; position:fixed; top:56px; right:115px; width:420px; border:2px solid #222; background:#fff; box-shadow:1px 1px 5px rgba(0,0,0,.3);}
+header .timePop {z-index:102; display:none; position:fixed; top:56px; right:115px; width:420px; border:2px solid #222; background:#fff; box-shadow:1px 1px 5px rgba(0,0,0,.3);}
 header .timePop h4 {height:60px; padding-left:15px; color:#222; font-size:20px; font-weight:100; line-height:60px; border-bottom:1px solid #ddd;}
 header .timePop > a.close {position:absolute; top:18px; right:19px; overflow:hidden; width:24px; height:24px; text-indent:-9999em; transform:rotate(45deg);}
 header .timePop > a.close:before {content:''; position:absolute; top:0; left:11px; width:1px; height:24px; background:#222;}

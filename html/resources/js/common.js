@@ -55,12 +55,8 @@ var pass = {
                 //console.log('success');
             },
             error:function(data){
-                if(sessionStorage.getItem('login') != 'error'){
-                    sessionStorage.setItem('login', 'error');
-                } else {
-                    sessionStorage.setItem('login', '');
-                };
-                location.href = 'login.html';
+                alert('ERROR');
+                //location.href = 'login.html';
                 return false;
             }
         });
@@ -144,6 +140,7 @@ var pass = {
 
 // Public Event /////////////////////////////////////////////////////////
 $(function() {
+    console.log(sessionStorage.getItem('login'));
     if(location.href.indexOf('login') == -1 && location.href.indexOf('join') == -1){
 
         if(sessionStorage.getItem('login') == 'logout'){
@@ -151,7 +148,7 @@ $(function() {
             sessionStorage.setItem('token', '');
             alert('로그아웃 되었습니다.\n다시 로그인해 주십시요.');
             location.href = 'login.html';
-        } else if(sessionStorage.getItem('login') == 'error' || sessionStorage.getItem('token') == ''){
+        } else if(sessionStorage.getItem('login') == '' || sessionStorage.getItem('login') == 'error' || sessionStorage.getItem('token') == ''){
             alert('정상적인 접근이 아닙니다.\n다시 로그인해 주십시요.');
             sessionStorage.setItem('login', '');
             sessionStorage.setItem('token', '');

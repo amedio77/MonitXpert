@@ -154,8 +154,8 @@
 						<div class="listSearch">
                             <div class="select_wrap">
                                 <select id="type">
-                                    <option>Name</option>
-                                    <option>IP</option>
+                                    <option value="name">Name</option>
+                                    <option value="ip">IP</option>
                                 </select>
                                 <label for="type">Name</label>
                             </div>
@@ -324,8 +324,11 @@
 				summaryDraw();
 
 				function summaryDraw(){
+					console.log(paastaSummaryURL+paastaSummaryIndex+'&pageItems=10&name='+paastaSummaryName);
 					// paasta Summary Data Load
-					paastaSummaryData = pass.ajaxLoad(paastaSummaryURL+paastaSummaryIndex+'&pageItems=10&name='+paastaSummaryName);
+					paastaSummaryData = pass.ajaxLoad(paastaSummaryURL+paastaSummaryIndex+'&pageItems=10&'+$('#type').val()+'='+paastaSummaryName);
+
+					console.log(paastaSummaryData);
 
 					paastaSummary.empty(); // paasta Summary Clear
 
@@ -368,16 +371,21 @@
 							paastaTopFunction(this.name);
 						};
 					});
+					
+					if(paastaSummaryData.totalCount > 10){
+						$('.paastaSummary').next('.paging').show();
+
+						for(var i=1; i <= Math.ceil(paastaSummaryData.totalCount/10); i++){
+							$('.paastaSummary').next('.paging').find('span').append('<a href="javascript:void(0);">'+i+'</a>');
+						};
+
+						$('.paastaSummary').next('.paging').find('span').find('a').eq(paastaSummaryIndex-1).addClass('on');
+					} else {
+						$('.paastaSummary').next('.paging').hide();
+					};
+
+					paasEvent();
 				};
-				
-
-				if(paastaSummaryData.totalCount > 10) $('.paastaSummary').next('.paging').show();
-
-				for(var i=1; i <= Math.ceil(paastaSummaryData.totalCount/10); i++){
-					$('.paastaSummary').next('.paging').find('span').append('<a href="javascript:void(0);">'+i+'</a>');
-				};
-
-				$('.paastaSummary').next('.paging').find('span').find('a').eq(paastaSummaryIndex-1).addClass('on');
 
 				function paastaTopFunction(name){
 					var paastaTopData = pass.ajaxLoad(paastaTopProcessURL+paastaID+'/memory');
@@ -406,58 +414,60 @@
 				};
 				
 				/***************************** Event *********************************/
-				paastaSummary.find('.topView').off().on('click', function(){
-					paastaID = $(this).parents('tr').data('id');
+				function paasEvent(){
+					paastaSummary.find('.topView').off().on('click', function(){
+						paastaID = $(this).parents('tr').data('id');
 
-					paastaTopFunction($(this).text());
-				});
+						paastaTopFunction($(this).text());
+					});
 
-				$('.chartView').off().on('click', function(){
-					$.cookie('result', $(this).parents('tr').data('id'));
-					$.cookie('name', $(this).parents('tr').find('.topView').text());
-				});
+					$('.chartView').off().on('click', function(){
+						$.cookie('result', $(this).parents('tr').data('id'));
+						$.cookie('name', $(this).parents('tr').find('.topView').text());
+					});
 
-				$('.paastaSummary').next('.paging').find('span').find('a').off().on('click', function(){
-					paastaSummaryIndex = $(this).text();
-					$(this).addClass('on').siblings().removeClass('on');
-					summaryDraw();
-				});
+					$('.paastaSummary').next('.paging').find('span').find('a').off().on('click', function(){
+						paastaSummaryIndex = $(this).text();
+						$(this).addClass('on').siblings().removeClass('on');
+						summaryDraw();
+					});
 
-				$('.search').off().on('click', function(){
-					paastaSummaryName = $(this).prev('input').val();
-					summaryDraw();
-				});
+					$('.search').off().on('click', function(){
+						paastaSummaryName = $(this).prev('input').val();
+						summaryDraw();
+					});
 
-				$('.overview ul li a').off().on('click', function(){
-					var thisClass = $(this).parent().attr('class');
+					$('.overview ul li a').off().on('click', function(){
+						var thisClass = $(this).parent().attr('class');
 
-					$('.status h4').text(thisClass.toUpperCase());
-					
-					var paastaOverviewDetail = pass.ajaxLoad(paastaOverviewURL+'/'+thisClass);
+						$('.status h4').text(thisClass.toUpperCase());
+						
+						var paastaOverviewDetail = pass.ajaxLoad(paastaOverviewURL+'/'+thisClass);
 
-					$('.statusDetail tbody').empty();
-					
-					if(paastaOverviewDetail.data.length > 0){
-						$.each(paastaOverviewDetail.data, function(n){
-							var html = '<tr>';
-							html += '	<td><a href="javacsrtip:void(0);" class="topView">'+this.name+'</a></td>';
-							html += '	<td>'+this.address+' <a href="paas_chart.html" class="chartView"><img src="resources/img/table_icon_view.png" alt="chart view"></a></td>';
-							html += '	<td class="'+this.state+'">'+this.state+'</td>';
-							html += '	<td>'+this.core+'</td>';
-							html += '	<td>'+pass.numberComma(2, this.cpuUsage)+'</td>';
-							html += '	<td>'+pass.numberComma(0, this.totalMemory)+'</td>';
-							html += '	<td>'+pass.numberComma(2, this.memoryUsage)+'</td>';
-							html += '	<td>'+pass.numberComma(0, this.totalDisk)+'</td>';
-							html += '	<td>'+pass.numberComma(0, this.dataDisk)+'</td>';
-							html += '	<td>'+this.diskStatus+'</td>';
-							html += '</tr>';
+						$('.statusDetail tbody').empty();
+						
+						if(paastaOverviewDetail.data.length > 0){
+							$.each(paastaOverviewDetail.data, function(n){
+								var html = '<tr>';
+								html += '	<td><a href="javacsrtip:void(0);" class="topView">'+this.name+'</a></td>';
+								html += '	<td>'+this.address+' <a href="paas_chart.html" class="chartView"><img src="resources/img/table_icon_view.png" alt="chart view"></a></td>';
+								html += '	<td class="'+this.state+'">'+this.state+'</td>';
+								html += '	<td>'+this.core+'</td>';
+								html += '	<td>'+pass.numberComma(2, this.cpuUsage)+'</td>';
+								html += '	<td>'+pass.numberComma(0, this.totalMemory)+'</td>';
+								html += '	<td>'+pass.numberComma(2, this.memoryUsage)+'</td>';
+								html += '	<td>'+pass.numberComma(0, this.totalDisk)+'</td>';
+								html += '	<td>'+pass.numberComma(0, this.dataDisk)+'</td>';
+								html += '	<td>'+this.diskStatus+'</td>';
+								html += '</tr>';
 
-							$('.statusDetail tbody').append(html).find('tr').last().data({'id':this.id});
-						});
+								$('.statusDetail tbody').append(html).find('tr').last().data({'id':this.id});
+							});
 
-						$('.popWrap').fadeIn(300);
-					};
-				});
+							$('.popWrap').fadeIn(300);
+						};
+					});
+				};
 			})
 		</script>
 

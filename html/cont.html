@@ -188,8 +188,7 @@
 						<div class="listSearch">
                             <div class="select_wrap">
                                 <select id="type">
-                                    <option>Name</option>
-                                    <option>IP</option>
+                                    <option value="name">Name</option>
                                 </select>
                                 <label for="type">Name</label>
                             </div>
@@ -378,6 +377,7 @@
 				summaryDraw();
 
 				function summaryDraw(){
+					console.log(containerSummaryURL+containerSummaryIndex+'&pageItems=10&name='+containerSummaryName);
 					// container Summary Data Load
 					containerSummaryData = pass.ajaxLoad(containerSummaryURL+containerSummaryIndex+'&pageItems=10&name='+containerSummaryName);
 
@@ -415,16 +415,21 @@
 							containerTopFunction(this.zoneName);
 						};
 					});
+
+					if(containerSummaryData.totalCount > 10){
+						$('.containerSummary').next('.paging').show();
+
+						for(var i=1; i <= Math.ceil(containerSummaryData.totalCount/10); i++){
+							$('.containerSummary').next('.paging').find('span').append('<a href="javascript:void(0);">'+i+'</a>');
+						};
+
+						$('.containerSummary').next('.paging').find('span').find('a').eq(containerSummaryIndex-1).addClass('on');
+					} else {
+						$('.containerSummary').next('.paging').hide();
+					};
+
+					contEvent();
 				};
-				
-
-				if(containerSummaryData.totalCount > 10) $('.containerSummary').next('.paging').show();
-
-				for(var i=1; i <= Math.ceil(containerSummaryData.totalCount/10); i++){
-					$('.containerSummary').next('.paging').find('span').append('<a href="javascript:void(0);">'+i+'</a>');
-				};
-
-				$('.containerSummary').next('.paging').find('span').find('a').eq(containerSummaryIndex-1).addClass('on');
 
 				function containerTopFunction(name){
 					var containerTopData = pass.ajaxLoad(containerTopProcessURL);
@@ -451,7 +456,7 @@
 							zoneName: "z1"
 							***************************************************************/
 							var html = '<tr>';
-							if(this.containers.length > 1){
+							if(this.containers != null && this.containers.length > 1){
 								html += '	<td rowspan="'+this.containers.length+'">'+this.cellName+'</td>';
 							} else {
 								html += '	<td>'+this.cellName+'</td>';
@@ -465,7 +470,7 @@
 							
 							containerTop.append(html);
 							
-							if(this.containers.length > 0){
+							if(this.containers != null && this.containers.length > 0){
 								var html = '<tr><td colspan="5" class="left">';
 
 								$.each(this.containers, function(x){
@@ -494,54 +499,56 @@
 				};
 				
 				/***************************** Event *********************************/
-				containerSummary.find('tr').off().on('click', function(){
-					containerID = $(this).data('id');
+				function contEvent(){
+					containerSummary.find('tr').off().on('click', function(){
+						containerID = $(this).data('id');
 
-					containerTopFunction(containerID);
-				});
+						containerTopFunction(containerID);
+					});
 
-				$('.containerSummary').next('.paging').find('span').find('a').off().on('click', function(){
-					containerSummaryIndex = $(this).text();
-					$(this).addClass('on').siblings().removeClass('on');
-					summaryDraw();
-				});
+					$('.containerSummary').next('.paging').find('span').find('a').off().on('click', function(){
+						containerSummaryIndex = $(this).text();
+						$(this).addClass('on').siblings().removeClass('on');
+						summaryDraw();
+					});
 
-				$('.search').off().on('click', function(){
-					containerSummaryName = $(this).prev('input').val();
-					summaryDraw();
-				});
+					$('.search').off().on('click', function(){
+						containerSummaryName = $(this).prev('input').val();
+						summaryDraw();
+					});
 
-				$('.overview ul li a').off().on('click', function(){
-					var thisClass = $(this).parent().attr('class');
+					$('.overview ul li a').off().on('click', function(){
+						var thisClass = $(this).parent().attr('class');
 
-					$('.status h4').text(thisClass.toUpperCase());
-					
-					var containerOverviewDetail = pass.ajaxLoad(cellOverviewURL+'/'+thisClass);
+						$('.status h4').text(thisClass.toUpperCase());
+						
+						var containerOverviewDetail = pass.ajaxLoad(cellOverviewURL+'/'+thisClass);
 
-					$('.statusDetail tbody').empty();
+						$('.statusDetail tbody').empty();
 
-					console.log(containerOverviewDetail);
-					
-					if(containerOverviewDetail.length > 0){
-						$.each(containerOverviewDetail, function(n){
-							var html = '<tr>';
-							html += '	<td><a href="javacsrtip:void(0);">'+this.cellName+'</a></td>';
-							html += '	<td>'+this.cellIp+'</td>';
-							html += '	<td>'+this.status+'</td>';
-							html += '	<td>'+this.core+'</td>';
-							html += '	<td>'+pass.numberComma(2, this.cpuUsage)+'</td>';
-							html += '	<td>'+pass.numberComma(0, this.totalMemory)+'</td>';
-							html += '	<td>'+pass.numberComma(2, this.memoryUsage)+'</td>';
-							html += '	<td>'+pass.numberComma(0, this.totalDisk)+'</td>';
-							html += '	<td>'+this.diskStatus+'</td>';
-							html += '</tr>';
+						console.log(containerOverviewDetail);
+						
+						if(containerOverviewDetail.length > 0){
+							$.each(containerOverviewDetail, function(n){
+								var html = '<tr>';
+								html += '	<td><a href="javacsrtip:void(0);">'+this.cellName+'</a></td>';
+								html += '	<td>'+this.cellIp+'</td>';
+								html += '	<td>'+this.status+'</td>';
+								html += '	<td>'+this.core+'</td>';
+								html += '	<td>'+pass.numberComma(2, this.cpuUsage)+'</td>';
+								html += '	<td>'+pass.numberComma(0, this.totalMemory)+'</td>';
+								html += '	<td>'+pass.numberComma(2, this.memoryUsage)+'</td>';
+								html += '	<td>'+pass.numberComma(0, this.totalDisk)+'</td>';
+								html += '	<td>'+this.diskStatus+'</td>';
+								html += '</tr>';
 
-							$('.statusDetail tbody').append(html).find('tr').last().data({'id':this.id});
-						});
+								$('.statusDetail tbody').append(html).find('tr').last().data({'id':this.id});
+							});
 
-						$('.popWrap').fadeIn(300);
-					};
-				});
+							$('.popWrap').fadeIn(300);
+						};
+					});
+				};
 			})
 		</script>
 

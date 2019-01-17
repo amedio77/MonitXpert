@@ -213,9 +213,18 @@
 					$('.location ul').append('<li><a href="#">' + $.cookie('name') + '</a></li>');
 				};
 
-				var logData = pass.ajaxLoad(pass.url + 'paas/log/recent?id='+$.cookie('result')+'&logType=cf&pageIndex=1&pageItems=50&period=5m');
+				var logData = pass.ajaxLoad(pass.url + 'cont/log/recent?id='+$.cookie('result')+'&logType=cf&pageIndex=1&pageItems=50&period=5m');
 
 				console.log(logData);
+
+				$.each(logData.messages, function(){
+					var html = '<tr>';
+					html += '	<td>'+this.time+'</td>';
+					html += '	<td>'+this.message+'</td>';
+					html += '</tr>';
+
+					$('.messages').append(html);
+				});
 
 				$('#date + .date').off().on('click', function(){$('#date').trigger('focus')})
 				$('#strTime, #endTime').timepicker({

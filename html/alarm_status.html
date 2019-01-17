@@ -280,103 +280,115 @@
                 // paasta Alarm Data Load
                 var alarmStatusData = pass.ajaxLoad(alarmStatusLoad);
 
+                console.log(alarmStatusData.data);
+                alarmStatusData.data.sort(function(a, b) {
+                    return a.alarmSendDate > b.alarmSendDate ? -1 : a.alarmSendDate > b.alarmSendDate ? 1 : 0;
+                });
+
                 alarmListDraw(alarmStatusData.data);
 
                 function alarmListDraw(data){                    
                     $('.alarmStatus').empty();
 
-                    $.each(data, function(n){
-                        /*
-                        alarmCnt: 1
-                        alarmMessage: "doppler/3 memory 의 상태critical↵memory 의 임계치인90%를 초과하였습니다. ↵ 현재 사용률 [95.51]% 입니다. "
-                        alarmSendDate: "2018-12-03 15:48:58"
-                        alarmTitle: "[doppler/3]의 memory 상태 [critical]"
-                        alarmType: "memory"
-                        appIndex: 0
-                        appName: ""
-                        appYn: "N"
-                        containerName: ""
-                        id: 47
-                        ip: "10.20.20.90"
-                        level: "critical"
-                        originId: 148
-                        originName: "doppler/3"
-                        originType: "pas"
-                        regDate: "2018-12-03 15:48:58"
-                        regUser: "Bat"
-                        resolveStatus: "1"
-                        resolveStatusName: "Alarm 발생"
-                        userName: "admin"
-                        */
-                        switch (this.originType){
-                            case 'bos':
-                                var originType = 'Bosh';
-                            break;
-                            case 'pas':
-                                var originType = 'PaaS-TA';
-                            break;
-                            case 'con':
-                                var originType = 'Container';
-                            break;
-                        }
-                        console.log(this.resolveStatus)
+                    if(data.length > 0){
+                        $('.alarmDetail').show();
+                        $('.more').show().find('strong').text(data.length - 5);
 
-                        var html = '<tr class="view'+this.resolveStatus+'">';
-                        html +=     '<td>'+this.alarmSendDate+'</td>';
-                        html +=     '<td>'+originType+'</td>';
-                        html +=     '<td>'+this.originName+'</td>';
-                        html +=     '<td>'+this.ip+'</td>';
-                        html +=     '<td class="left"><a href="javascript:void(0);">'+this.alarmTitle+'</a></td>';
-                        html +=     '<td><strong class="'+this.level+'">'+this.level+'</strong></td>';
-                        html +=     '<td>'+this.resolveStatusName+'</td>';
-                        html += '</tr>';
+                        $.each(data, function(n){
+                            /*
+                            alarmCnt: 1
+                            alarmMessage: "doppler/3 memory 의 상태critical↵memory 의 임계치인90%를 초과하였습니다. ↵ 현재 사용률 [95.51]% 입니다. "
+                            alarmSendDate: "2018-12-03 15:48:58"
+                            alarmTitle: "[doppler/3]의 memory 상태 [critical]"
+                            alarmType: "memory"
+                            appIndex: 0
+                            appName: ""
+                            appYn: "N"
+                            containerName: ""
+                            id: 47
+                            ip: "10.20.20.90"
+                            level: "critical"
+                            originId: 148
+                            originName: "doppler/3"
+                            originType: "pas"
+                            regDate: "2018-12-03 15:48:58"
+                            regUser: "Bat"
+                            resolveStatus: "1"
+                            resolveStatusName: "Alarm 발생"
+                            userName: "admin"
+                            */
+                            switch (this.originType){
+                                case 'bos':
+                                    var originType = 'Bosh';
+                                break;
+                                case 'pas':
+                                    var originType = 'PaaS-TA';
+                                break;
+                                case 'con':
+                                    var originType = 'Container';
+                                break;
+                            }
+                            console.log(this.resolveStatus)
 
-                        $('.alarmStatus').append(html).find('tr').last().data({
-                            'id' : this.id,
-                            'originType' : originType,
-                            'originName' : this.originName,
-                            'ip' : this.ip,
-                            'alarmType' : this.alarmType,
-                            'level' : this.level,
-                            'alarmTitle' : this.alarmTitle,
-                            'alarmMessage' : this.alarmMessage,
-                            'alarmSendDate' : this.alarmSendDate
+                            var html = '<tr class="view'+this.resolveStatus+'">';
+                            html +=     '<td>'+this.alarmSendDate+'</td>';
+                            html +=     '<td>'+originType+'</td>';
+                            html +=     '<td>'+this.originName+'</td>';
+                            html +=     '<td>'+this.ip+'</td>';
+                            html +=     '<td class="left"><a href="javascript:void(0);">'+this.alarmTitle+'</a></td>';
+                            html +=     '<td><strong class="'+this.level+'">'+this.level+'</strong></td>';
+                            html +=     '<td>'+this.resolveStatusName+'</td>';
+                            html += '</tr>';
+
+                            $('.alarmStatus').append(html).find('tr').last().data({
+                                'id' : this.id,
+                                'originType' : originType,
+                                'originName' : this.originName,
+                                'ip' : this.ip,
+                                'alarmType' : this.alarmType,
+                                'level' : this.level,
+                                'alarmTitle' : this.alarmTitle,
+                                'alarmMessage' : this.alarmMessage,
+                                'alarmSendDate' : this.alarmSendDate
+                            });
+
+                            if(n == 0){
+                                $('.originType').text(originType).data({
+                                    'id' :this.id
+                                });
+                                $('.originName').text(this.originName);
+                                $('.ip').text(this.ip);
+                                $('.alarmType').text(this.alarmType);
+                                $('.level').text(this.level);
+                                $('.alarmTitle').text(this.alarmTitle);
+                                $('.alarmMessage').text(this.alarmMessage);
+                                $('.alarmSendDate').text(this.alarmSendDate);
+
+                                var history = pass.ajaxLoad(pass.url + 'paas/alarm/status/'+this.id);
+
+                                if(history.data.length > 0){
+                                    historyDraw(history.data);
+                                };
+                            };
+
+                            if(alarmBull == 'false' && n > 4) $('.alarmStatus').find('tr').last().hide();
                         });
 
-                        if(n == 0){
-                            $('.originType').text(originType).data({
-                                'id' :this.id
-                            });
-                            $('.originName').text(this.originName);
-                            $('.ip').text(this.ip);
-                            $('.alarmType').text(this.alarmType);
-                            $('.level').text(this.level);
-                            $('.alarmTitle').text(this.alarmTitle);
-                            $('.alarmMessage').text(this.alarmMessage);
-                            $('.alarmSendDate').text(this.alarmSendDate);
-
-                            var history = pass.ajaxLoad(pass.url + 'paas/alarm/status/'+this.id);
-
-                            if(history.data.length > 0){
-                                historyDraw(history.data);
-                            };
+                        if(alarmBull == 'true'){
+                            console.log('a');
+                            $('.alarmStatus').find('tr').not('.view1').hide();
+                            $('.more').hide();
+                            $('#type4').val(1).change();
                         };
-
-                        if(alarmBull == 'false' && n > 4) $('.alarmStatus').find('tr').last().hide();
-                    });
-                    
-                    if(data.length > 5){
-                        $('.more').show().find('strong').text(data.length - 5);
                     } else {
+                        $('.alarmDetail').hide();
                         $('.more').hide();
+
+                        $('.alarmStatus').append('<tr><td colspan="7">검색 목록이 없습니다.</td></tr>')
                     };
 
-                    if(alarmBull == 'true'){
-                        console.log('a');
-                        $('.alarmStatus').find('tr').not('.view1').hide();
-                        $('.more').hide();
-                        $('#type4').val(1).change();
-                    };
+
+                    alEvent();
                 };
 
                 function historyDraw(data){
@@ -436,48 +448,55 @@
                     });
                 };
 
-                $('.search').off().on('click', function(){
-                    var searchData = pass.ajaxLoad(alarmStatusLoad+'&originType='+$('#type1').val()+'&alarmType='+$('#type2').val()+'&resolveStatus='+$('#type4').val()+'&level='+$('#type3').val());
+                function alEvent(){
+                    $('.search').off().on('click', function(){
+                        var searchData = pass.ajaxLoad(alarmStatusLoad+'&originType='+$('#type1').val()+'&alarmType='+$('#type2').val()+'&resolveStatus='+$('#type4').val()+'&level='+$('#type3').val());
 
-                    alarmListDraw(searchData.data);
-                });
-
-                $('.more a').off().on('click', function(){
-                    $(this).parent().hide();
-                    $('.alarmStatus').find('tr').show();
-                });
-
-                $('.alarmStatus tr').find('a').off().on('click', function(){
-                    $('.originType').text($(this).parents('tr').data('originType')).data({
-                        'id' : $(this).parents('tr').data('id')
+                        alarmListDraw(searchData.data);
                     });
-                    $('.originName').text($(this).parents('tr').data('originName'));
-                    $('.ip').text($(this).parents('tr').data('ip'));
-                    $('.alarmType').text($(this).parents('tr').data('alarmType'));
-                    $('.level').text($(this).parents('tr').data('level'));
-                    $('.alarmTitle').text($(this).parents('tr').data('alarmTitle'));
-                    $('.alarmMessage').text($(this).parents('tr').data('alarmMessage'));
-                    $('.alarmSendDate').text($(this).parents('tr').data('alarmSendDate'));
-                });
 
-                $('.receipt').off().on('click', function(){
-                    $('.alarmHistory').slideDown(300);
-                });
+                    $('.more a').off().on('click', function(){
+                        $(this).parent().hide();
+                        $('.alarmStatus').find('tr').show();
+                    });
 
-                $('.save').off().on('click', function(){
-                    var actionPush = '{"alarmId":'+$('.originType').data('id')+',"alarmActionDesc":"'+$('textarea').val()+'"}';
-                    
-                    pass.ajaxPost(pass.url + 'paas/alarm/action/'+$(this).parents('li').data('id'), 'POST', JSON.parse(actionPush));
+                    $('.alarmStatus tr').find('a').off().on('click', function(){
+                        $('.originType').text($(this).parents('tr').data('originType')).data({
+                            'id' : $(this).parents('tr').data('id')
+                        });
+                        $('.originName').text($(this).parents('tr').data('originName'));
+                        $('.ip').text($(this).parents('tr').data('ip'));
+                        $('.alarmType').text($(this).parents('tr').data('alarmType'));
+                        $('.level').text($(this).parents('tr').data('level'));
+                        $('.alarmTitle').text($(this).parents('tr').data('alarmTitle'));
+                        $('.alarmMessage').text($(this).parents('tr').data('alarmMessage'));
+                        $('.alarmSendDate').text($(this).parents('tr').data('alarmSendDate'));
 
-                    alert('저장되었습니다.');
-                });
+                        $('.alarmHistory').slideUp(300).find('textarea').val('');
+                    });
 
-                $('.coml').off().on('click', function(){
-                    var actionPush = '{"alarmId":'+$('.originType').data('id')+',"alarmActionDesc":"'+$('textarea').val()+'"}';
-                    pass.ajaxPost(pass.url + 'paas/alarm/action/'+$(this).parents('li').data('id'), 'POST', JSON.parse(actionPush));
+                    $('.receipt').off().on('click', function(){
+                        $('.alarmHistory').slideDown(300);
+                    });
 
-                    alert('저장되었습니다.');
-                });
+                    $('.save').off().on('click', function(){
+                        var actionPush = '{"alarmId":'+$('.originType').data('id')+',"alarmActionDesc":"'+$('textarea').val()+'"}';
+                        console.log(actionPush);
+                        
+                        pass.ajaxPost(pass.url + 'paas/alarm/action/'+$('.originType').data('id'), 'POST', JSON.parse(actionPush));
+
+                        alert('저장되었습니다.');
+                    });
+
+                    $('.coml').off().on('click', function(){
+                        var actionPush = '{"alarmActionDesc":"'+$('textarea').val()+'"}';
+                        console.log(actionPush);
+                        
+                        pass.ajaxPost(pass.url + 'paas/alarm/action/'+$('.originType').data('id'), 'PATCH', JSON.parse(actionPush));
+
+                        alert('저장되었습니다.');
+                    });
+                };
             });
         </script>
 

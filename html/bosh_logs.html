@@ -153,7 +153,7 @@
                         </div>
 					
 						<div class="table style01">
-							<table>
+							<table class="messages">
 								<caption></caption>
 								<colgroup>
 									<col width="20%">
@@ -166,21 +166,10 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>2017-03-07 10:48:03</td>
-										<td>promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheuspromentheus promentheus promentheus</td>
-									</tr>
-									<tr>
-										<td>2017-03-07 10:48:03</td>
-										<td>promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheuspromentheus promentheus promentheus</td>
-									</tr>
-									<tr>
-										<td>2017-03-07 10:48:03</td>
-										<td>promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheus promentheuspromentheus promentheus promentheus</td>
-									</tr>
+									<td colspan="2">검색결과가 없습니다.</td>
 								</tbody>
 							</table>
-							<div class="paging">
+							<div class="paging" style="display:none;">
 								<a href="#">&lt;</a>
 								<span>
 									<a href="#" class="on">1</a>
@@ -216,6 +205,17 @@
 				var logData = pass.ajaxLoad(pass.url + 'paas/log/recent?id='+$.cookie('result')+'&logType=cf&pageIndex=1&pageItems=50&period=5m');
 
 				console.log(logData);
+
+				if(logData.messages != null) $('.messages tbody').empty();
+
+				$.each(logData.messages, function(){
+					var html = '<tr>';
+					html += '	<td>'+this.time+'</td>';
+					html += '	<td>'+this.message+'</td>';
+					html += '</tr>';
+
+					$('.messages tbody').append(html);
+				});
 
 				$('#date + .date').off().on('click', function(){$('#date').trigger('focus')})
 				$('#strTime, #endTime').timepicker({
