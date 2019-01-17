@@ -55,7 +55,7 @@ var pass = {
                 //console.log('success');
             },
             error:function(data){
-                alert('ERROR');
+                console.log('ERROR');
                 //location.href = 'login.html';
                 return false;
             }
